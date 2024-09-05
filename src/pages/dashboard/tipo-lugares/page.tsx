@@ -26,12 +26,12 @@ export default function DashboardTipoLugares() {
   return (
     <DasboardLayout>
       <div className='md:mx-20 lg:mx-28 xl:mx-32'>
-        <div className='flex md:flex-row flex-col gap-4 items-center justify-between mb-7'>
+        <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-7'>
           <h1 className='text-xl font-bold'>Tipos de lugares</h1>
 
           <Link
             to='/dashboard/nuevo-tipo-lugar'
-            className={cn(buttonVariants())}
+            className={cn(buttonVariants(), "w-fit")}
           >
             Agregar nuevo tipo de lugar
           </Link>

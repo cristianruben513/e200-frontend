@@ -18,7 +18,7 @@ export const adminLinks = [
     label: "Eventos",
   },
   {
-    href: "/dashboard/nuevo-directorio",
+    href: "/dashboard/directorio",
     icon: IoAt,
     label: "Directorio",
   },

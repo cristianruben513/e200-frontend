@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Promotor } from "@/types/promotor.interface"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -23,6 +22,9 @@ import {
 import { ArrowUpDown, EditIcon, TrashIcon } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
+
+import { Organizacion } from "@/types/organizacion.interface"
+import { Promotor } from "@/types/promotor.interface"
 
 const columns: ColumnDef<Promotor>[] = [
   {
@@ -62,7 +64,26 @@ const columns: ColumnDef<Promotor>[] = [
         <ArrowUpDown className='ml-2 size-4' />
       </Button>
     ),
-    cell: ({ row }) => <div>{row.getValue("afinidad")}</div>,
+    cell: ({ row }) => {
+      const afinidad = row.getValue("afinidad")
+      return <div>{afinidad === "O" ? "Opositor" : "Afín"}</div>
+    },
+  },
+  {
+    accessorKey: "organizacion",
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Organización
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const organizacion: Organizacion = row.getValue("organizacion")
+      return <div>{organizacion.organizador}</div>
+    },
   },
   {
     id: "actions",
@@ -172,8 +193,7 @@ export default function DirectorioTable({
 
       <div className='flex items-center justify-end space-x-2 py-4'>
         <div className='flex-1 text-sm text-muted-foreground'>
-          {table.getFilteredSelectedRowModel().rows.length} tipo de lugares
-          registrados
+          {table.getRowModel().rows.length} registros
         </div>
 
         <div className='space-x-2'>

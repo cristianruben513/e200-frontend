@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -8,6 +7,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -15,49 +16,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import useAxios from "@/hooks/useAxios"
+import { firebaseImageUpload } from "@/lib/firebaseImageUpload"
 import { fotoSchema } from "@/validations/fotos"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
-import { LoaderIcon } from "lucide-react"
+import axiosInstance from "@/axiosInstance"
+import { ImageIcon, LoaderIcon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { ImageIcon } from "lucide-react"
 
-import { UploadFileIcon, uploadFileContainer } from "@/components/uploadFileIcon"
+import {
+  UploadFileIcon,
+  uploadFileContainer,
+} from "@/components/uploadFileIcon"
+import { Evento } from "@/types/evento.interface"
 
-type TipoLugarFormValues = z.infer<typeof fotoSchema>
+type GaleriaFormValues = z.infer<typeof fotoSchema>
 
-export default function NuevaFotoForm() {
+export default function NuevaFotoForm({
+  dataEventos,
+}: {
+  dataEventos: Evento[]
+}) {
   const navigate = useNavigate()
 
   const [isLoading, setIsLoading] = useState(false)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
-  const form = useForm<TipoLugarFormValues>({
+  const form = useForm<GaleriaFormValues>({
     resolver: zodResolver(fotoSchema),
     mode: "onChange",
   })
 
-  const { data: dataEventos } = useAxios<any[]>({
-    url: "/eventos",
-    method: "GET",
-  })
-
-  async function onSubmit(data: TipoLugarFormValues) {
+  async function onSubmit(data: GaleriaFormValues) {
     setIsLoading(true)
 
     try {
-      const tipoLugarData = {
-        idEvento: data.evento,
+      const uploadedImage = await firebaseImageUpload(data.url[0], "e200")
+
+      const galeriaData = {
+        idEvento: Number(data.evento),
+        url: uploadedImage.url,
       }
 
-      await axios.post("/galeria", tipoLugarData)
+      await axiosInstance.post("/fotos", galeriaData)
+
+      toast.success("Foto subida correctamente")
 
       navigate("/dashboard/galeria")
     } catch {
@@ -101,7 +107,7 @@ export default function NuevaFotoForm() {
 
         <FormField
           control={form.control}
-          name='image'
+          name='url'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Imagen de la categoria</FormLabel>
@@ -112,7 +118,7 @@ export default function NuevaFotoForm() {
                     <Input
                       type='file'
                       className='hidden'
-                      accept="image/*"
+                      accept='image/*'
                       name={field.name}
                       onChange={(e) => {
                         field.onChange(e.target.files)

@@ -22,7 +22,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import useAxios from "@/hooks/useAxios"
 import { generateTimeOptions } from "@/lib/timeSelectOptions"
 import { cn } from "@/lib/utils"
 import { eventSchema } from "@/validations/events"
@@ -43,6 +42,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 
 import axiosInstance from "@/axiosInstance"
+import { EjeTematico } from "@/types/eje-tematico.interface"
 import { Municipio } from "@/types/municipio.interface"
 import { Organizacion as Organizador } from "@/types/organizacion.interface"
 import { Promotor } from "@/types/promotor.interface"
@@ -56,17 +56,30 @@ interface TipoEvento {
   tipoEvento: string
 }
 
-interface EjeTematico {
-  id: number
-  ejeTematico: string
-}
-
 interface Impacto {
   id: number
   impacto: string
 }
 
-export default function NewEventForm() {
+export default function NewEventForm({
+  dataTipoLugares,
+  dataTipoEventos,
+  dataOrganizadores,
+  dataEjesTematicos,
+  dataImpactos,
+  dataMunicipios,
+  dataSecciones,
+  dataPromotores,
+}: {
+  dataTipoLugares: TipoLugar[]
+  dataTipoEventos: TipoEvento[]
+  dataOrganizadores: Organizador[]
+  dataEjesTematicos: EjeTematico[]
+  dataImpactos: Impacto[]
+  dataMunicipios: Municipio[]
+  dataSecciones: Seccion[]
+  dataPromotores: Promotor[]
+}) {
   const navigate = useNavigate()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -92,46 +105,6 @@ export default function NewEventForm() {
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema),
     mode: "onChange",
-  })
-
-  const { data: dataTipoLugares } = useAxios<TipoLugar[]>({
-    url: "/tipo-lugares",
-    method: "GET",
-  })
-
-  const { data: dataTipoEventos } = useAxios<TipoEvento[]>({
-    url: "/tipo-eventos",
-    method: "GET",
-  })
-
-  const { data: dataOrganizadores } = useAxios<Organizador[]>({
-    url: "/organizaciones",
-    method: "GET",
-  })
-
-  const { data: dataEjesTematicos } = useAxios<EjeTematico[]>({
-    url: "/eje-tematicos",
-    method: "GET",
-  })
-
-  const { data: dataImpactos } = useAxios<Impacto[]>({
-    url: "/impactos",
-    method: "GET",
-  })
-
-  const { data: dataMunicipios } = useAxios<Municipio[]>({
-    url: "/municipios",
-    method: "GET",
-  })
-
-  const { data: dataSecciones } = useAxios<Seccion[]>({
-    url: "/secciones",
-    method: "GET",
-  })
-
-  const { data: dataPromotores } = useAxios<Promotor[]>({
-    url: "/directorios",
-    method: "GET",
   })
 
   // filtrar secciones por municipio
@@ -418,7 +391,7 @@ export default function NewEventForm() {
               </FormItem>
             )}
           />
-
+          
           <FormField
             control={form.control}
             name='seccion'

@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import type { TipoLugar } from "@/types/tipo-lugares.interface"
-import { LoopIcon } from "@radix-ui/react-icons"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -23,7 +22,6 @@ import {
 } from "@tanstack/react-table"
 import { ArrowUpDown, EditIcon, TrashIcon } from "lucide-react"
 import { useState } from "react"
-import { Link } from "react-router-dom"
 import { toast } from "sonner"
 
 const columns: ColumnDef<TipoLugar>[] = [
@@ -56,22 +54,16 @@ const columns: ColumnDef<TipoLugar>[] = [
   {
     id: "actions",
     header: () => <div className='text-center'>Acciones</div>,
-    cell: ({ row }) => {
+    cell: () => {
       return (
         <div className='flex justify-center items-center gap-4'>
           <Button
             variant='outline'
             size='icon'
-            onClick={() => toast.success("Stock actualizado")}
-          >
-            <LoopIcon className='size-4' />
-          </Button>
-          <Link
-            className={buttonVariants({ variant: "outline", size: "icon" })}
-            to={`/admin/categories/edit/${row.getValue("id")}`}
+            onClick={() => toast.warning("Borrando ...")}
           >
             <EditIcon className='size-4' />
-          </Link>
+          </Button>
           <Button
             variant='outline'
             size='icon'
@@ -167,8 +159,7 @@ export default function TipoLugaresTable({
 
       <div className='flex items-center justify-end space-x-2 py-4'>
         <div className='flex-1 text-sm text-muted-foreground'>
-          {table.getFilteredSelectedRowModel().rows.length} tipo de lugares
-          registrados
+          {table.getRowModel().rows.length} registros
         </div>
 
         <div className='space-x-2'>

@@ -73,7 +73,7 @@ export const eventSchema = z.object({
   }),
   localidad: z.string().optional(),
   asistentesReales: z.string().optional(),
-  calificacion: z.number().optional(),
+  calificacion: z.string().optional(),
   observaciones: z.string().optional(),
   urlRedesSociales: z.string().optional(),
 })

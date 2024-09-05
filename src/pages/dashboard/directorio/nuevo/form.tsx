@@ -18,7 +18,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import useAxios from "@/hooks/useAxios"
 import { directorioSchema } from "@/validations/directorio"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderIcon } from "lucide-react"
@@ -28,62 +27,30 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
 
+import { Organizador } from "@/types/evento.interface"
+import { Municipio } from "@/types/municipio.interface"
+import { Cargo } from "@/types/cargo.interface"
+import { Seccion } from "@/types/seccion.interface"
+
 type DirectorioFormValues = z.infer<typeof directorioSchema>
 
-interface Organizador {
-  id: number
-  organizador: string
-}
-
-interface Municipio {
-  id: number
-  municipio: string
-}
-
-interface Cargo {
-  id: number
-  cargo: string
-}
-
-interface Seccion {
-  id: number
-  seccion: string
-  distritoLocal: number
-  distritoFederal: number
-  prioridad: "S" | "N"
-  municipio: {
-    id: number
-    municipio: string
-  }
-}
-
-export default function DirectorioForm() {
+export default function DirectorioForm({
+  dataOrganizadores,
+  dataMunicipios,
+  dataCargos,
+  dataSecciones,
+}: {
+  dataOrganizadores: Organizador[]
+  dataMunicipios: Municipio[]
+  dataCargos: Cargo[]
+  dataSecciones: Seccion[]
+}) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<DirectorioFormValues>({
     resolver: zodResolver(directorioSchema),
     mode: "onChange",
-  })
-
-  const { data: dataOrganizadores } = useAxios<Organizador[]>({
-    url: "/organizaciones",
-    method: "GET",
-  })
-
-  const { data: dataMunicipios } = useAxios<Municipio[]>({
-    url: "/municipios",
-    method: "GET",
-  })
-
-  const { data: dataCargos } = useAxios<Cargo[]>({
-    url: "/cargos",
-    method: "GET",
-  })
-
-  const { data: dataSecciones } = useAxios<Seccion[]>({
-    url: "/secciones",
-    method: "GET",
   })
 
   // filtrar secciones por municipio

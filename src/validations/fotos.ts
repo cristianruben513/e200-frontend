@@ -10,7 +10,7 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 ];
 
 export const fotoSchema = z.object({
-  image: z
+  url: z
     .any()
     .refine((files) => {
       return files?.[0]?.size <= MAX_FILE_SIZE;
