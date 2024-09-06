@@ -1,4 +1,5 @@
 import axiosInstance from "@/axiosInstance"
+import Loader from "@/components/loader"
 import { buttonVariants } from "@/components/ui/button"
 import {
   Tooltip,
@@ -9,10 +10,9 @@ import {
 import DasboardLayout from "@/layouts/dashboard"
 import { cn } from "@/lib/utils"
 import { Foto } from "@/types/foto.interface"
-import { SquareUserIcon } from "lucide-react"
+import { MapPinnedIcon, SquareUserIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { MapPinnedIcon } from "lucide-react"
 
 export default function DashboardGaleria() {
   const [loading, setLoading] = useState(false)
@@ -36,11 +36,17 @@ export default function DashboardGaleria() {
     fetchData()
   }, [])
 
-  if (loading) return <DasboardLayout>Cargando...</DasboardLayout>
+  if (loading) {
+    return (
+      <DasboardLayout>
+        <Loader />
+      </DasboardLayout>
+    )
+  }
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20 lg:mx-28 xl:mx-32'>
+      <div className='md:mx-20     '>
         <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-7'>
           <h1 className='text-xl font-bold'>Galeria</h1>
 
@@ -63,13 +69,13 @@ export default function DashboardGaleria() {
                     alt={foto.evento.evento}
                   />
                 </TooltipTrigger>
-                <TooltipContent className="grid gap-2 bg-slate-200">
+                <TooltipContent className='grid gap-2 bg-slate-200'>
                   <p className='text-lg font-bold'>{foto.evento.evento}</p>
-                  <p className="flex items-center">
+                  <p className='flex items-center'>
                     <MapPinnedIcon className='mr-1' size={16} />
                     {foto.evento.municipio.municipio}
                   </p>
-                  <p className="flex items-center">
+                  <p className='flex items-center'>
                     <SquareUserIcon className='mr-1' size={16} />
                     {foto.evento.promotor.nombre}
                   </p>

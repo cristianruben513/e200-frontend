@@ -5,12 +5,13 @@ import LoginPage from "./pages/auth/login/page"
 import DashboardIndex from "./pages/dashboard"
 import DashboardNuevoDirectorio from "./pages/dashboard/directorio/nuevo/page"
 import DashboardDirectorio from "./pages/dashboard/directorio/page"
+import DashboardEventoDetail from "./pages/dashboard/eventos/detail/page"
 import DashboardNuevoEvento from "./pages/dashboard/eventos/nuevo/page"
+import DashboardEventos from "./pages/dashboard/eventos/page"
 import DashboardNuevaFoto from "./pages/dashboard/galeria/nuevo/page"
 import DashboardGaleria from "./pages/dashboard/galeria/page"
 import DashboardNuevoTipoLugar from "./pages/dashboard/tipo-lugares/nuevo/page"
 import DashboardTipoLugares from "./pages/dashboard/tipo-lugares/page"
-import DashboardEventos from "./pages/dashboard/eventos/page"
 
 function App() {
   return (
@@ -23,10 +24,14 @@ function App() {
 
         <Route path='/dashboard' element={<DashboardIndex />} />
 
-        <Route path='/dashboard/eventos' element={<DashboardEventos/>} />
+        <Route path='/dashboard/eventos' element={<DashboardEventos />} />
         <Route
           path='/dashboard/nuevo-evento'
           element={<DashboardNuevoEvento />}
+        />
+        <Route
+          path='/dashboard/eventos/:id'
+          element={<DashboardEventoDetail />}
         />
 
         <Route path='/dashboard/directorio' element={<DashboardDirectorio />} />

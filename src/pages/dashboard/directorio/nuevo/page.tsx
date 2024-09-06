@@ -1,18 +1,18 @@
-import DasboardLayout from "@/layouts/dashboard"
-import DirectorioForm from "./form"
-import { Organizador } from "@/types/evento.interface"
-import { useState } from "react"
-import { useEffect } from "react"
 import axiosInstance from "@/axiosInstance"
-import { Municipio } from "@/types/municipio.interface"
+import Loader from "@/components/loader"
+import DasboardLayout from "@/layouts/dashboard"
 import { Cargo } from "@/types/cargo.interface"
+import { Organizador } from "@/types/evento.interface"
+import { Municipio } from "@/types/municipio.interface"
 import { Seccion } from "@/types/seccion.interface"
+import { useEffect, useState } from "react"
+import DirectorioForm from "./form"
 
 export default function DashboardNuevoDirectorio() {
   const [loading, setLoading] = useState(false)
 
   const [dataOrganizadores, setDataOrganizadores] = useState<Organizador[]>([])
-  const [dataMunicipios , setDataMunicipios] = useState<Municipio[]>([])
+  const [dataMunicipios, setDataMunicipios] = useState<Municipio[]>([])
   const [dataCargos, setDataCargos] = useState<Cargo[]>([])
   const [dataSecciones, setDataSecciones] = useState<Seccion[]>([])
 
@@ -42,14 +42,22 @@ export default function DashboardNuevoDirectorio() {
     fetchData()
   }, [])
 
-  if (loading) return <DasboardLayout>Cargando...</DasboardLayout>
+  if (loading) {
+    return (
+      <DasboardLayout>
+        <Loader />
+      </DasboardLayout>
+    )
+  }
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20 lg:mx-28 xl:mx-32'>
-        <h1 className='text-xl font-bold mb-7'>Registrar entrada en Directorio</h1>
+      <div className='md:mx-20     '>
+        <h1 className='text-xl font-bold mb-7'>
+          Registrar entrada en Directorio
+        </h1>
 
-        <DirectorioForm 
+        <DirectorioForm
           dataOrganizadores={dataOrganizadores}
           dataMunicipios={dataMunicipios}
           dataCargos={dataCargos}

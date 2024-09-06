@@ -1,3 +1,4 @@
+import axiosInstance from "@/axiosInstance"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -10,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { tipoLugarSchema } from "@/validations/tipoLugar"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
 import { LoaderIcon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -37,7 +37,8 @@ export default function NuevoTipoLugarForm() {
       const tipoLugarData = {
         tipoLugar: data.tipoLugar,
       }
-      await axios.post("/tipo-lugares", tipoLugarData)
+      await axiosInstance.post("/tipo-lugares", tipoLugarData)
+
       navigate("/dashboard/tipo-lugares")
     } catch {
       setIsLoading(false)

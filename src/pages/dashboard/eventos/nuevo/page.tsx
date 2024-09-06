@@ -1,13 +1,14 @@
-import DasboardLayout from "@/layouts/dashboard"
-import NewEventForm from "./form"
-import { useState, useEffect } from "react"
 import axiosInstance from "@/axiosInstance"
-import { TipoLugar } from "@/types/tipo-lugares.interface"
-import { TipoEvento } from "@/types/tipo-evento.interface"
+import Loader from "@/components/loader"
+import DasboardLayout from "@/layouts/dashboard"
 import { EjeTematico, Impacto, Organizador } from "@/types/evento.interface"
 import { Municipio } from "@/types/municipio.interface"
-import { Seccion } from "@/types/seccion.interface"
 import { Promotor } from "@/types/promotor.interface"
+import { Seccion } from "@/types/seccion.interface"
+import { TipoEvento } from "@/types/tipo-evento.interface"
+import { TipoLugar } from "@/types/tipo-lugares.interface"
+import { useEffect, useState } from "react"
+import NewEventForm from "./form"
 
 export default function DashboardNuevoEvento() {
   const [loading, setLoading] = useState(false)
@@ -48,7 +49,6 @@ export default function DashboardNuevoEvento() {
 
       const responsePromotores = await axiosInstance.get("/directorios")
       setDataPromotores(responsePromotores.data)
-
     } catch (error) {
       console.error(error)
     } finally {
@@ -60,14 +60,20 @@ export default function DashboardNuevoEvento() {
     fetchData()
   }, [])
 
-  if (loading) return <DasboardLayout>Cargando...</DasboardLayout>
+  if (loading) {
+    return (
+      <DasboardLayout>
+        <Loader />
+      </DasboardLayout>
+    )
+  }
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20 lg:mx-28 xl:mx-32'>
+      <div className='md:mx-20     '>
         <h1 className='text-xl font-bold mb-7'>Registrar evento</h1>
 
-        <NewEventForm 
+        <NewEventForm
           dataTipoLugares={dataTipoLugar}
           dataTipoEventos={dataTipoEventos}
           dataOrganizadores={dataOrganizadores}
