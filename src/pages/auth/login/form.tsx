@@ -1,3 +1,4 @@
+import axiosInstance from "@/axiosInstance"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -10,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { loginSchema } from "@/validations/login"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
 import { LoaderIcon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -39,7 +39,16 @@ export default function LoginForm() {
         password: data.password,
       }
 
-      await axios.post("/auth/login", loginData)
+      const response = await axiosInstance.post("/auth/login", loginData)
+
+      // Guardar el token en localStorage
+      localStorage.setItem("authToken", response.data.token)
+
+      // Configurar Axios para incluir el token en futuras solicitudes
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`
+
       navigate("/dashboard")
     } catch {
       setIsLoading(false)

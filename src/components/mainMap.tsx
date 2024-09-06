@@ -15,5 +15,5 @@ export default function MainMap({
   const mapRef = useRef(null)
   useMap(mapRef, markers, center, zoom)
 
-  return <div ref={mapRef} className='w-full h-full rounded-xl' />
+  return <div ref={mapRef} className='w-full h-full rounded-xl border border-neutral-500' />
 }

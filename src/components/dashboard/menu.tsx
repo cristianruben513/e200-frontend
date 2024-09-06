@@ -1,6 +1,5 @@
 import { Menubar } from "@/components/ui/menubar"
-import { IoLogOutOutline } from "react-icons/io5"
-import { Button } from "../ui/button"
+import LogoutButton from "../logoutButton"
 import MobileMenu from "./mobile-menu"
 
 export function Menu() {
@@ -11,15 +10,7 @@ export function Menu() {
       </div>
 
       <div className='flex items-center gap-3'>
-        <Button
-          onClick={() => console.log("sign out")}
-          className='md:flex hidden'
-          variant='destructive'
-        >
-          <span className='md:block hidden'>Cerrar Sesion</span>
-          <IoLogOutOutline className='text-xl md:ml-2' />
-        </Button>
-
+        <LogoutButton />
         <MobileMenu />
       </div>
     </Menubar>

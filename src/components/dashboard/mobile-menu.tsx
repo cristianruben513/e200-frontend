@@ -4,6 +4,7 @@ import { IoMenuOutline } from "react-icons/io5"
 import { adminLinks } from "./links"
 import { useLocation } from "react-router-dom"
 import { MobileMenuItem } from "./mobile-menu-item"
+import LogoutButton from "../logoutButton"
 
 export default function MobileMenu() {
   const location = useLocation()
@@ -33,12 +34,7 @@ export default function MobileMenu() {
                 ))}
               </div>
 
-              <Button
-                onClick={() => console.log("Cerrar Sesion")}
-                variant='destructive'
-              >
-                Cerrar sesion
-              </Button>
+              <LogoutButton />
             </div>
           </SheetContent>
         </Sheet>

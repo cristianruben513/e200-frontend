@@ -1,6 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ToasterComponent } from "./components/providers/toaster"
-import IndexPage from "./pages"
+
+import ProtectedRoute from "./components/protectedRoute"
+import PublicRoute from "./components/publicRoute"
+import Redirect from "./components/redirect"
+
 import LoginPage from "./pages/auth/login/page"
 import DashboardIndex from "./pages/dashboard"
 import DashboardNuevoDirectorio from "./pages/dashboard/directorio/nuevo/page"
@@ -18,39 +22,58 @@ function App() {
     <BrowserRouter>
       <ToasterComponent />
       <Routes>
-        <Route path='/' element={<IndexPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<h1>Register</h1>} />
+        <Route path='/' element={<Redirect />} />
+        <Route path='/' element={<Redirect />} />
+        <Route
+          path='/login'
+          element={<PublicRoute element={<LoginPage />} />}
+        />
+        <Route
+          path='/register'
+          element={<PublicRoute element={<h1>Register</h1>} />}
+        />
 
-        <Route path='/dashboard' element={<DashboardIndex />} />
-
-        <Route path='/dashboard/eventos' element={<DashboardEventos />} />
+        {/* Rutas protegidas */}
+        <Route
+          path='/dashboard'
+          element={<ProtectedRoute element={<DashboardIndex />} />}
+        />
+        <Route
+          path='/dashboard/eventos'
+          element={<ProtectedRoute element={<DashboardEventos />} />}
+        />
         <Route
           path='/dashboard/nuevo-evento'
-          element={<DashboardNuevoEvento />}
+          element={<ProtectedRoute element={<DashboardNuevoEvento />} />}
         />
         <Route
           path='/dashboard/eventos/:id'
-          element={<DashboardEventoDetail />}
+          element={<ProtectedRoute element={<DashboardEventoDetail />} />}
         />
-
-        <Route path='/dashboard/directorio' element={<DashboardDirectorio />} />
+        <Route
+          path='/dashboard/directorio'
+          element={<ProtectedRoute element={<DashboardDirectorio />} />}
+        />
         <Route
           path='/dashboard/nuevo-directorio'
-          element={<DashboardNuevoDirectorio />}
+          element={<ProtectedRoute element={<DashboardNuevoDirectorio />} />}
         />
-
         <Route
           path='/dashboard/tipo-lugares'
-          element={<DashboardTipoLugares />}
+          element={<ProtectedRoute element={<DashboardTipoLugares />} />}
         />
         <Route
           path='/dashboard/nuevo-tipo-lugar'
-          element={<DashboardNuevoTipoLugar />}
+          element={<ProtectedRoute element={<DashboardNuevoTipoLugar />} />}
         />
-
-        <Route path='/dashboard/galeria' element={<DashboardGaleria />} />
-        <Route path='/dashboard/nueva-foto' element={<DashboardNuevaFoto />} />
+        <Route
+          path='/dashboard/galeria'
+          element={<ProtectedRoute element={<DashboardGaleria />} />}
+        />
+        <Route
+          path='/dashboard/nueva-foto'
+          element={<ProtectedRoute element={<DashboardNuevaFoto />} />}
+        />
 
         <Route path='*' element={<h1>404</h1>} />
       </Routes>
