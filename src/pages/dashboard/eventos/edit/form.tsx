@@ -35,9 +35,9 @@ import {
   LoaderIcon,
   MapPinIcon,
 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
 
@@ -47,21 +47,20 @@ import { Municipio } from "@/types/municipio.interface"
 import { Organizacion as Organizador } from "@/types/organizacion.interface"
 import { Promotor } from "@/types/promotor.interface"
 import { Seccion } from "@/types/seccion.interface"
+import { TipoEvento } from "@/types/tipo-evento.interface"
 import { TipoLugar } from "@/types/tipo-lugares.interface"
 
-type EventFormValues = z.infer<typeof eventSchema>
+import Loader from "@/components/loader"
+import { Evento } from "@/types/evento.interface"
 
-interface TipoEvento {
-  id: number
-  tipoEvento: string
-}
+type EventFormValues = z.infer<typeof eventSchema>
 
 interface Impacto {
   id: number
   impacto: string
 }
 
-export default function NewEventForm({
+export default function EditarEventForm({
   dataTipoLugares,
   dataTipoEventos,
   dataOrganizadores,
@@ -81,8 +80,61 @@ export default function NewEventForm({
   dataPromotores: Promotor[]
 }) {
   const navigate = useNavigate()
-
+  const { id } = useParams<{ id: string }>()
   const [isLoading, setIsLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(true)
+
+  const form = useForm<EventFormValues>({
+    resolver: zodResolver(eventSchema),
+    mode: "onChange",
+  })
+
+  // Cargar datos del tipo de lugar al montar el componente
+  useEffect(() => {
+    const fetchTipoLugar = async () => {
+      try {
+        const response: { data: Evento } = await axiosInstance.get(
+          `/eventos/${id}`
+        )
+
+        console.log(response.data)
+        
+        form.reset({
+          evento: response.data.evento,
+          descripcion: response.data.descripcion,
+          lugar: response.data.lugar,
+          fechaInicio: new Date(response.data.fechaInicio),
+          horaInicio: response.data.horaInicio,
+          fechaFin: response.data.fechaFin ? new Date(response.data.fechaFin) : undefined,
+          horaFin: response.data.horaFin || undefined,
+          asistentesEsperados: response.data.asistentesEsperados.toString(),
+          asistentesReales: response.data.asistentesReales?.toString(),
+          latitud: response.data.latitud,
+          longitud: response.data.longitud,
+          localidad: response.data.localidad?.toString(),
+          calificacion: response.data.calificacion?.toString(),
+          observaciones: response.data.observaciones || undefined,
+          urlRedesSociales: response.data.urlRedesSociales || undefined,
+          tpLugar: response.data.tipoLugar.id.toString(),
+          tpEvento: response.data.tipoEvento.id.toString(),
+          organizador: response.data.organizador.id.toString(),
+          ejeTematico: response.data.ejeTematico.id.toString(),
+          impacto: response.data.impacto.id.toString(),
+          municipio: response.data.municipio.id.toString(),
+          seccion: response.data.seccion.id.toString(),
+          promotor: response.data.promotor.id.toString(),
+        })
+      } catch {
+        toast.error("No se pudo cargar el tipo de lugar")
+      } finally {
+        setIsFetching(false)
+      }
+    }
+
+    if (id) {
+      fetchTipoLugar()
+    }
+  }, [id, form])
 
   const handleClick = () => {
     if (navigator.geolocation) {
@@ -101,11 +153,6 @@ export default function NewEventForm({
   }
 
   const timeOptions = generateTimeOptions()
-
-  const form = useForm<EventFormValues>({
-    resolver: zodResolver(eventSchema),
-    mode: "onChange",
-  })
 
   // filtrar secciones por municipio
   const municipio = form.watch("municipio")
@@ -144,12 +191,9 @@ export default function NewEventForm({
         idPromotor: Number(data.promotor),
       }
 
-      console.log(JSON.stringify(eventData))
+      await axiosInstance.patch(`/eventos/${id}`, eventData)
 
-      await axiosInstance.post("/eventos", eventData)
-
-      toast.success("Evento registrado")
-
+      toast.success("Evento actualizado con éxito")
       navigate("/dashboard/eventos")
     } catch {
       setIsLoading(false)
@@ -157,6 +201,10 @@ export default function NewEventForm({
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (isFetching) {
+    return <Loader />
   }
 
   return (
@@ -390,7 +438,7 @@ export default function NewEventForm({
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name='seccion'

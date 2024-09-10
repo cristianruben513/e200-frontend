@@ -10,6 +10,7 @@ export interface Promotor {
   celular: string;
   email: string;
   comentario: string | null;
+  marcador: string;
   municipio: Municipio;
   organizacion: Organizacion;
   cargo: Cargo;

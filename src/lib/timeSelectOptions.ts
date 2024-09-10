@@ -6,7 +6,7 @@ export const generateTimeOptions = () => {
     for (let m = 0; m < 60; m += 30) {  // Intervalos de 15 minutos
       const hour = h.toString().padStart(2, '0');
       const minute = m.toString().padStart(2, '0');
-      options.push(`${hour}:${minute}`);
+      options.push(`${hour}:${minute}:00`);
     }
   }
   

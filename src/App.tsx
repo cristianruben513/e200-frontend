@@ -14,10 +14,20 @@ import DashboardNuevoEvento from "./pages/dashboard/eventos/nuevo/page"
 import DashboardEventos from "./pages/dashboard/eventos/page"
 import DashboardNuevaFoto from "./pages/dashboard/galeria/nuevo/page"
 import DashboardGaleria from "./pages/dashboard/galeria/page"
+import DashboardEditarTipoLugar from "./pages/dashboard/tipo-lugares/edit/page"
 import DashboardNuevoTipoLugar from "./pages/dashboard/tipo-lugares/nuevo/page"
 import DashboardTipoLugares from "./pages/dashboard/tipo-lugares/page"
+import DashboardEditarEvento from "./pages/dashboard/eventos/edit/page"
 
 function App() {
+  enum Perfil {
+    Administrador = "Administrador",
+    Supervisor = "Supervisor",
+    Staff = "Staff",
+  }
+
+  const all = [Perfil.Administrador, Perfil.Staff, Perfil.Supervisor]
+
   return (
     <BrowserRouter>
       <ToasterComponent />
@@ -36,45 +46,105 @@ function App() {
         {/* Rutas protegidas */}
         <Route
           path='/dashboard'
-          element={<ProtectedRoute element={<DashboardIndex />} />}
+          element={
+            <ProtectedRoute allowedRoles={all} element={<DashboardIndex />} />
+          }
         />
         <Route
           path='/dashboard/eventos'
-          element={<ProtectedRoute element={<DashboardEventos />} />}
+          element={
+            <ProtectedRoute allowedRoles={all} element={<DashboardEventos />} />
+          }
         />
         <Route
           path='/dashboard/nuevo-evento'
-          element={<ProtectedRoute element={<DashboardNuevoEvento />} />}
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoEvento />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-evento/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEditarEvento />}
+            />
+          }
         />
         <Route
           path='/dashboard/eventos/:id'
-          element={<ProtectedRoute element={<DashboardEventoDetail />} />}
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEventoDetail />}
+            />
+          }
         />
         <Route
           path='/dashboard/directorio'
-          element={<ProtectedRoute element={<DashboardDirectorio />} />}
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardDirectorio />}
+            />
+          }
         />
         <Route
           path='/dashboard/nuevo-directorio'
-          element={<ProtectedRoute element={<DashboardNuevoDirectorio />} />}
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoDirectorio />}
+            />
+          }
         />
         <Route
           path='/dashboard/tipo-lugares'
-          element={<ProtectedRoute element={<DashboardTipoLugares />} />}
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardTipoLugares />}
+            />
+          }
         />
         <Route
           path='/dashboard/nuevo-tipo-lugar'
-          element={<ProtectedRoute element={<DashboardNuevoTipoLugar />} />}
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoTipoLugar />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-tipo-lugar/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEditarTipoLugar />}
+            />
+          }
         />
         <Route
           path='/dashboard/galeria'
-          element={<ProtectedRoute element={<DashboardGaleria />} />}
+          element={
+            <ProtectedRoute allowedRoles={all} element={<DashboardGaleria />} />
+          }
         />
         <Route
           path='/dashboard/nueva-foto'
-          element={<ProtectedRoute element={<DashboardNuevaFoto />} />}
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevaFoto />}
+            />
+          }
         />
 
+        <Route path='/unauthorized' element={<h1>Unauthorized</h1>} />
         <Route path='*' element={<h1>404</h1>} />
       </Routes>
     </BrowserRouter>

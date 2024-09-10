@@ -1,4 +1,3 @@
-import { TablePagination } from "@/components/tables/pagination"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Table,
@@ -8,8 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { cn } from "@/lib/utils"
-import type { TipoLugar } from "@/types/tipo-lugares.interface"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -22,11 +19,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, EditIcon } from "lucide-react"
+import { ArrowUpDown, EditIcon, EyeIcon } from "lucide-react"
 import { useState } from "react"
+
+import { TablePagination } from "@/components/tables/pagination"
+import { cn } from "@/lib/utils"
+import { Evento } from "@/types/evento.interface"
 import { Link } from "react-router-dom"
 
-const columns: ColumnDef<TipoLugar>[] = [
+const columns: ColumnDef<Evento>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -41,31 +42,40 @@ const columns: ColumnDef<TipoLugar>[] = [
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "tipoLugar",
+    accessorKey: "evento",
+    header: () => <div>Evento</div>,
+    cell: ({ row }) => <div>{row.getValue("evento")}</div>,
+  },
+  {
+    accessorKey: "fechaInicio",
     header: ({ column }) => (
       <Button
         variant='ghost'
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Nombre
+        Fecha de inicio
         <ArrowUpDown className='ml-2 size-4' />
       </Button>
     ),
-    cell: ({ row }) => <div>{row.getValue("tipoLugar")}</div>,
+    cell: ({ row }) => <div>{row.getValue("fechaInicio")}</div>,
   },
   {
     id: "actions",
     header: () => <div className='text-center'>Acciones</div>,
     cell: ({ row }) => {
-      const id = row.getValue("id")
-
       return (
         <div className='flex justify-center items-center gap-4'>
           <Link
-            className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
-            to={`/dashboard/editar-tipo-lugar/${id}`}
+            to={`/dashboard/editar-evento/${row.getValue("id")}`}
+            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
           >
             <EditIcon className='size-4' />
+          </Link>
+          <Link
+            to={`/dashboard/eventos/${row.getValue("id")}`}
+            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
+          >
+            <EyeIcon className='size-4' />
           </Link>
         </div>
       )
@@ -73,10 +83,10 @@ const columns: ColumnDef<TipoLugar>[] = [
   },
 ]
 
-export default function TipoLugaresTable({
-  dataTipoLugares,
+export default function EventosTable({
+  dataEventos,
 }: {
-  dataTipoLugares: TipoLugar[]
+  dataEventos: Evento[]
 }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -84,7 +94,7 @@ export default function TipoLugaresTable({
   const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
-    data: dataTipoLugares,
+    data: dataEventos,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

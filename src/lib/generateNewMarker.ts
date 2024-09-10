@@ -1,19 +1,44 @@
 import { Map, Marker, Popup } from 'mapbox-gl';
 
 export const generateNewMarker = ({
-  longitud, 
-  latitud, 
+  longitud,
+  latitud,
   map,
+  iconUrl,
+  nombreEvento,
+  fechaInicio,
 }: {
   longitud: number,
   latitud: number,
-  map: Map
+  map: Map,
+  iconUrl: string
+  nombreEvento: string
+  fechaInicio: string
 }) => {
   const popUp = new Popup({ closeButton: false, anchor: 'left', })
-    .setHTML(`<div class="popup">You click here: <br/>[${longitud},  ${latitud}]</div>`)
+    .setHTML(`
+      <div class="popup">
+        <p>${nombreEvento}</p>
+        <br/> 
+        <p>${fechaInicio}</p>
+      </div>
+    `);
 
-  new Marker({ color: '#63df29', scale: 1 })
+  // Crear un elemento div que contendrá la imagen del marcador
+  const el = document.createElement('div');
+  el.className = 'custom-marker';
+
+  // Crear la imagen del marcador
+  const img = document.createElement('img');
+  img.src = iconUrl;
+  img.style.width = '40px';
+  img.style.height = '25px';
+
+  el.appendChild(img);
+
+  // Crear el marcador con el elemento personalizado
+  new Marker(el)
     .setLngLat([longitud, latitud])
     .setPopup(popUp)
-    .addTo(map)
+    .addTo(map);
 }

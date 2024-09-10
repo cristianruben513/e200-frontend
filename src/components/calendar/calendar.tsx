@@ -18,7 +18,7 @@ export default function CalendarioEventos({ eventos }: { eventos: Evento[] }) {
   const eventosMapeados = mapearEventos(eventos)
 
   return (
-    <div>
+    <div className="bg-neutral-100 p-4 rounded-xl">
       <Calendar
         localizer={localizer}
         events={eventosMapeados}
@@ -29,6 +29,7 @@ export default function CalendarioEventos({ eventos }: { eventos: Evento[] }) {
         onSelectEvent={(evento) => {
           navigate(`/dashboard/eventos/${evento.id}`)
         }}
+        views={["month"]}
         messages={{
           next: "Sig.",
           previous: "Ant.",

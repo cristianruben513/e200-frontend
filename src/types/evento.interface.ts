@@ -1,9 +1,8 @@
-import { TipoLugar } from "./tipo-lugares.interface";
-import { TipoEvento } from "./tipo-evento.interface";
 import { Municipio } from "./municipio.interface";
+import { Promotor } from "./promotor.interface";
 import { Seccion } from "./seccion.interface";
-import { Organizacion } from "./organizacion.interface";
-import { Cargo } from "./cargo.interface";
+import { TipoEvento } from "./tipo-evento.interface";
+import { TipoLugar } from "./tipo-lugares.interface";
 
 export interface Evento {
   id: number;
@@ -63,15 +62,3 @@ export interface Impacto {
   impacto: string;
 }
 
-export interface Promotor {
-  id: number;
-  nombre: string;
-  genero: string;
-  celular: string;
-  email: string;
-  comentario: string | null;
-  municipio: Municipio;
-  organizacion: Organizacion;
-  cargo: Cargo;
-  seccion: Seccion;
-}

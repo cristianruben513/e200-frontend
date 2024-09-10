@@ -9,14 +9,17 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import useAuthStore from "@/stores/useAuthStore"
 import { loginSchema } from "@/validations/login"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { jwtDecode } from "jwt-decode"
 import { LoaderIcon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
+import { JwtPayload } from "@/types/jwt.interface"
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
@@ -30,6 +33,8 @@ export default function LoginForm() {
     mode: "onChange",
   })
 
+  const { setUser } = useAuthStore()
+
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true)
 
@@ -41,14 +46,26 @@ export default function LoginForm() {
 
       const response = await axiosInstance.post("/auth/login", loginData)
 
-      // Guardar el token en localStorage
-      localStorage.setItem("authToken", response.data.token)
+      const token = response.data.token
+
+      localStorage.setItem("authToken", token)
 
       // Configurar Axios para incluir el token en futuras solicitudes
-      axiosInstance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${response.data.token}`
+      axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
+      // Decodificar el token JWT para obtener el perfil y otros datos
+      const decodedToken: JwtPayload = jwtDecode(token)
+
+      // Guardar el usuario y el token en el estado global de Zustand
+      setUser(
+        {
+          username: decodedToken.username,
+          perfil: decodedToken.perfil,
+        },
+        token
+      )
+
+      // Redirigir al dashboard
       navigate("/dashboard")
     } catch {
       setIsLoading(false)

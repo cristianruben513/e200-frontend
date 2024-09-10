@@ -1,21 +1,35 @@
+import { JwtPayload } from "@/types/jwt.interface"
+import { jwtDecode } from "jwt-decode"
 import React from "react"
 import { Navigate, useLocation } from "react-router-dom"
 
 interface ProtectedRouteProps {
   element: React.ReactElement
+  allowedRoles: string[]
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-  const isAuthenticated = !!localStorage.getItem("authToken") // Verifica si el token está en localStorage
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  element,
+  allowedRoles,
+}) => {
+  const token = localStorage.getItem("authToken") // Obtiene el token del localStorage
   const location = useLocation()
 
-  return isAuthenticated ? (
-    // Renderiza el componente protegido
-    element
-  ) : (
-    // Redirige al usuario a la página de inicio de sesión
-    <Navigate to='/login' state={{ from: location }} />
-  )
+  if (!token) {
+    return <Navigate to='/login' state={{ from: location }} />
+  }
+
+  try {
+    const decodedToken: JwtPayload = jwtDecode(token)
+
+    if (!allowedRoles.includes(decodedToken.perfil)) {
+      return <Navigate to='/unauthorized' state={{ from: location }} />
+    }
+
+    return element
+  } catch {
+    return <Navigate to='/login' state={{ from: location }} />
+  }
 }
 
 export default ProtectedRoute

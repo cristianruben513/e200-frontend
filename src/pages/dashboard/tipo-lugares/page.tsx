@@ -6,22 +6,35 @@ import { TipoLugar } from "@/types/tipo-lugares.interface"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import TipoLugaresTable from "./tipo-lugares-table"
+import Loader from "@/components/loader"
 
 export default function DashboardTipoLugares() {
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState<TipoLugar[]>([])
 
   const fetchData = async () => {
     try {
+      setLoading(true)
       const response = await axiosInstance.get("/tipo-lugares")
       setData(response.data)
     } catch (error) {
       console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     fetchData()
   }, [])
+
+  if (loading) {
+    return (
+      <DasboardLayout>
+        <Loader />
+      </DasboardLayout>
+    )
+  }
 
   return (
     <DasboardLayout>

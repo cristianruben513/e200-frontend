@@ -1,14 +1,15 @@
+import useAuthStore from "@/stores/useAuthStore"
 import { IoLogOutOutline } from "react-icons/io5"
-import { Button } from "./ui/button"
 import { useNavigate } from "react-router-dom"
+import { Button } from "./ui/button"
 
 export default function LogoutButton() {
   const navigate = useNavigate()
+  const { clearUser } = useAuthStore()
 
   const handleLogout = () => {
-    // Eliminar el token de autenticación
     localStorage.removeItem("authToken")
-    // Redirigir al usuario a la página de inicio de sesión
+    clearUser()
     navigate("/login")
   }
 

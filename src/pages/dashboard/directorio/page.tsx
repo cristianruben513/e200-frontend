@@ -1,4 +1,5 @@
 import axiosInstance from "@/axiosInstance"
+import Loader from "@/components/loader"
 import { buttonVariants } from "@/components/ui/button"
 import DasboardLayout from "@/layouts/dashboard"
 import { cn } from "@/lib/utils"
@@ -8,20 +9,32 @@ import { Link } from "react-router-dom"
 import DirectorioTable from "./directorio-table"
 
 export default function DashboardDirectorio() {
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState<Promotor[]>([])
 
   const fetchData = async () => {
     try {
+      setLoading(true)
       const response = await axiosInstance.get("/directorios")
       setData(response.data)
     } catch (error) {
       console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     fetchData()
   }, [])
+
+  if (loading) {
+    return (
+      <DasboardLayout>
+        <Loader />
+      </DasboardLayout>
+    )
+  }
 
   return (
     <DasboardLayout>

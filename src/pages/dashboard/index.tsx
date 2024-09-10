@@ -4,7 +4,8 @@ import FiltroMunicipio from "@/components/filtros/filtroMunicipio"
 import FiltroPromotor from "@/components/filtros/filtroPromotor"
 import MainMap from "@/components/mainMap"
 import DasboardLayout from "@/layouts/dashboard"
-import { Evento, Promotor } from "@/types/evento.interface"
+import { Evento } from "@/types/evento.interface"
+import { Promotor } from "@/types/promotor.interface"
 import { useEffect, useState } from "react"
 
 export default function DashboardIndex() {
@@ -77,6 +78,9 @@ export default function DashboardIndex() {
   const markers = eventosFiltrados.map((evento) => ({
     latitud: Number(evento.latitud.replace(",", ".")),
     longitud: Number(evento.longitud.replace(",", ".")),
+    marcador: evento.promotor.marcador,
+    nombreEvento: evento.evento,
+    fechaInicio: evento.fechaInicio,
   }))
 
   const lat = 20.689728
@@ -89,8 +93,10 @@ export default function DashboardIndex() {
           <h2 className='text-xl font-bold mb-8'>Mapa de eventos</h2>
 
           <div className='p-4 bg-neutral-100 rounded-xl'>
-            <p className="text-center text-sm font-mono mb-2">Tipo de division de mapa</p>
-            <div className="flex space-x-2">
+            <p className='text-center text-sm font-mono mb-2'>
+              Tipo de division de mapa
+            </p>
+            <div className='flex space-x-2'>
               <button
                 className={`${
                   mapaSeleccionado === "secciones"
@@ -99,7 +105,7 @@ export default function DashboardIndex() {
                 } px-4 py-2 rounded-md`}
                 onClick={() => setMapaSeleccionado("secciones")}
               >
-                Secciones
+                Distritos
               </button>
               <button
                 className={`${
@@ -121,22 +127,24 @@ export default function DashboardIndex() {
           onPromotorChange={setPromotorSeleccionado}
         />
 
-        <FiltroMunicipio
-          municipios={municipios}
-          municipioSeleccionado={municipioSeleccionado}
-          onMunicipioChange={setMunicipioSeleccionado}
-        />
+        <div className='grid md:grid-cols-2 gap-5'>
+          <FiltroMunicipio
+            municipios={municipios}
+            municipioSeleccionado={municipioSeleccionado}
+            onMunicipioChange={setMunicipioSeleccionado}
+          />
 
-        <FiltroDistritoLocal
-          distritosLocales={distritosLocales}
-          distritoLocalSeleccionado={distritoLocalSeleccionado}
-          onDistritoLocalChange={setDistritoLocalSeleccionado}
-        />
+          <FiltroDistritoLocal
+            distritosLocales={distritosLocales}
+            distritoLocalSeleccionado={distritoLocalSeleccionado}
+            onDistritoLocalChange={setDistritoLocalSeleccionado}
+          />
+        </div>
 
         {mapaSeleccionado === "secciones" ? (
           <div className='h-[530px] mb-10'>
             <p className='mb-3 font-semibold'>
-              Mapa con division por secciones
+              Mapa con division por distritos
             </p>
             <MainMap zoom={9} center={[lng, lat]} markers={markers} />
           </div>
@@ -145,7 +153,12 @@ export default function DashboardIndex() {
             <p className='mb-3 font-semibold'>
               Mapa con division por municipios
             </p>
-            <MainMap zoom={9} center={[lng, lat]} markers={markers} />
+            <MainMap
+              style='mapbox://styles/cristian51310/cm0v4tehl008301nt8ayk0zgi'
+              zoom={9}
+              center={[lng, lat]}
+              markers={markers}
+            />
           </div>
         )}
       </div>

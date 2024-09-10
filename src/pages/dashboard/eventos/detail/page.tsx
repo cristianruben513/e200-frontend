@@ -6,12 +6,14 @@ import Loader from "@/components/loader"
 import MainMap from "@/components/mainMap"
 import DasboardLayout from "@/layouts/dashboard"
 import { Evento } from "@/types/evento.interface"
+import { Foto } from "@/types/foto.interface"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 export default function DashboardEventoDetail() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<Evento | null>(null)
+  const [photos, setPhotos] = useState<Foto[]>([])
 
   const { id } = useParams<{ id: string }>()
 
@@ -20,6 +22,9 @@ export default function DashboardEventoDetail() {
       setLoading(true)
       const response = await axiosInstance.get(`/eventos/${id}`)
       setData(response.data)
+
+      const responsePhotos = await axiosInstance.get(`/fotos/eventos/${id}`)
+      setPhotos(responsePhotos.data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -31,7 +36,7 @@ export default function DashboardEventoDetail() {
     fetchData()
   }, [])
 
-  if (loading || !data) {
+  if (loading || !data || !photos) {
     return (
       <DasboardLayout>
         <Loader />
@@ -39,8 +44,8 @@ export default function DashboardEventoDetail() {
     )
   }
 
-  const latitud = Number(data.latitud.replace(',', '.'))
-  const longitud = Number(data.longitud.replace(',', '.'))
+  const latitud = Number(data.latitud.replace(",", "."))
+  const longitud = Number(data.longitud.replace(",", "."))
 
   console.log(latitud, longitud)
 
@@ -72,14 +77,23 @@ export default function DashboardEventoDetail() {
           <section className='aspect-square h-full w-full bg-green-50 rounded-xl'>
             <MainMap
               center={[longitud, latitud]}
-              markers={[{ latitud, longitud }]}
+              markers={[{ latitud, longitud, marcador: data?.promotor.marcador }]}
               zoom={14}
             />
           </section>
-          <section className='grid grid-cols-2 grid-rows-2 gap-4'>
-            {[1, 2, 3, 4].map((i) => (
-              <div className='aspect-square w-full h-full bg-gray-100 rounded-xl'>
-                {i}
+
+          <section className='grid grid-cols-2 gap-4'>
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className='aspect-square rounded-xl shadow-lg'>
+                {photos[index] ? (
+                  <img
+                    className='w-full h-full object-cover rounded-xl'
+                    src={photos[index].url}
+                    alt={`Foto ${index + 1}`}
+                  />
+                ) : (
+                  <div className='w-full h-full bg-gray-300 rounded-xl' />
+                )}
               </div>
             ))}
           </section>
