@@ -103,6 +103,7 @@ export default function EditarEventForm({
           evento: response.data.evento,
           descripcion: response.data.descripcion,
           lugar: response.data.lugar,
+          statusEvento: response.data.statusEvento,
           fechaInicio: new Date(response.data.fechaInicio),
           horaInicio: response.data.horaInicio,
           fechaFin: response.data.fechaFin ? new Date(response.data.fechaFin) : undefined,
@@ -168,6 +169,7 @@ export default function EditarEventForm({
         evento: data.evento,
         descripcion: data.descripcion,
         lugar: data.lugar,
+        statusEvento: data.statusEvento,
         fechaInicio: new Date(data.fechaInicio).toISOString().slice(0, 10),
         horaInicio: data.horaInicio,
         fechaFin:

@@ -77,7 +77,15 @@ export default function DashboardEventoDetail() {
           <section className='aspect-square h-full w-full bg-green-50 rounded-xl'>
             <MainMap
               center={[longitud, latitud]}
-              markers={[{ latitud, longitud, marcador: data?.promotor.marcador }]}
+              markers={[
+                {
+                  latitud,
+                  longitud,
+                  marcador: data?.promotor.marcador,
+                  nombreEvento: data?.evento,
+                  fechaInicio: data?.fechaInicio,
+                },
+              ]}
               zoom={14}
             />
           </section>

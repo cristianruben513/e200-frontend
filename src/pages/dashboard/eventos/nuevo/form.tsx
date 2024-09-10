@@ -121,6 +121,7 @@ export default function NewEventForm({
         evento: data.evento,
         descripcion: data.descripcion,
         lugar: data.lugar,
+        statusEvento: data.statusEvento,
         fechaInicio: new Date(data.fechaInicio).toISOString().slice(0, 10),
         horaInicio: data.horaInicio,
         fechaFin:

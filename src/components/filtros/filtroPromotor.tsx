@@ -1,4 +1,4 @@
-import { Promotor } from "@/types/evento.interface"
+import { Promotor } from "@/types/promotor.interface"
 
 interface FiltroPromotorProps {
   promotores: Promotor[]

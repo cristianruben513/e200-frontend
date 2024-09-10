@@ -9,6 +9,7 @@ export interface Evento {
   evento: string;
   descripcion: string;
   lugar: string;
+  statusEvento: string;
   fechaInicio: string; // Formato 'YYYY-MM-DD'
   horaInicio: string;  // Formato 'HH:MM:SS'
   fechaFin: string | null;
