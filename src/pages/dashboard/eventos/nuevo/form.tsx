@@ -1,3 +1,4 @@
+import OptionalBadge from "@/components/optionalBadge"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -183,10 +184,7 @@ export default function NewEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Descripcion{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Descripcion <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Textarea className='resize-none' {...field} />
@@ -391,7 +389,7 @@ export default function NewEventForm({
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name='seccion'
@@ -427,10 +425,7 @@ export default function NewEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Localidad{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Localidad <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Input type='localidad' {...field} />
@@ -461,10 +456,7 @@ export default function NewEventForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Asistentes Reales{" "}
-                  <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                    opcional
-                  </span>
+                  Asistentes Reales <OptionalBadge />
                 </FormLabel>
                 <FormControl>
                   <Input type='number' {...field} />
@@ -561,9 +553,7 @@ export default function NewEventForm({
                   <FormLabel>
                     <CalendarOffIcon className='size-4' />
                     Fecha
-                    <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                      opcional
-                    </span>
+                    <OptionalBadge />
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -608,9 +598,7 @@ export default function NewEventForm({
                   <FormLabel>
                     <Clock9Icon className='size-4' />
                     Hora
-                    <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                      opcional
-                    </span>
+                    <OptionalBadge />
                   </FormLabel>
                   <FormControl>
                     <Select
@@ -642,10 +630,7 @@ export default function NewEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Calificacion{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Calificacion <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Input min={0} max={5} type='number' {...field} />
@@ -661,10 +646,7 @@ export default function NewEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Observaciones{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Observaciones <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Textarea {...field} />

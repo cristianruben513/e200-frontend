@@ -12,7 +12,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   element,
   allowedRoles,
 }) => {
-  const token = localStorage.getItem("authToken") // Obtiene el token del localStorage
+  const token = localStorage.getItem("authToken")
   const location = useLocation()
 
   if (!token) {

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -37,7 +38,7 @@ import {
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
 
@@ -50,7 +51,7 @@ import { Seccion } from "@/types/seccion.interface"
 import { TipoEvento } from "@/types/tipo-evento.interface"
 import { TipoLugar } from "@/types/tipo-lugares.interface"
 
-import Loader from "@/components/loader"
+import OptionalBadge from "@/components/optionalBadge"
 import { Evento } from "@/types/evento.interface"
 
 type EventFormValues = z.infer<typeof eventSchema>
@@ -69,6 +70,7 @@ export default function EditarEventForm({
   dataMunicipios,
   dataSecciones,
   dataPromotores,
+  dataEvento,
 }: {
   dataTipoLugares: TipoLugar[]
   dataTipoEventos: TipoEvento[]
@@ -78,11 +80,11 @@ export default function EditarEventForm({
   dataMunicipios: Municipio[]
   dataSecciones: Seccion[]
   dataPromotores: Promotor[]
+  dataEvento: Evento
 }) {
   const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
+
   const [isLoading, setIsLoading] = useState(false)
-  const [isFetching, setIsFetching] = useState(true)
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema),
@@ -91,51 +93,33 @@ export default function EditarEventForm({
 
   // Cargar datos del tipo de lugar al montar el componente
   useEffect(() => {
-    const fetchTipoLugar = async () => {
-      try {
-        const response: { data: Evento } = await axiosInstance.get(
-          `/eventos/${id}`
-        )
-
-        console.log(response.data)
-        
-        form.reset({
-          evento: response.data.evento,
-          descripcion: response.data.descripcion,
-          lugar: response.data.lugar,
-          statusEvento: response.data.statusEvento,
-          fechaInicio: new Date(response.data.fechaInicio),
-          horaInicio: response.data.horaInicio,
-          fechaFin: response.data.fechaFin ? new Date(response.data.fechaFin) : undefined,
-          horaFin: response.data.horaFin || undefined,
-          asistentesEsperados: response.data.asistentesEsperados.toString(),
-          asistentesReales: response.data.asistentesReales?.toString(),
-          latitud: response.data.latitud,
-          longitud: response.data.longitud,
-          localidad: response.data.localidad?.toString(),
-          calificacion: response.data.calificacion?.toString(),
-          observaciones: response.data.observaciones || undefined,
-          urlRedesSociales: response.data.urlRedesSociales || undefined,
-          tpLugar: response.data.tipoLugar.id.toString(),
-          tpEvento: response.data.tipoEvento.id.toString(),
-          organizador: response.data.organizador.id.toString(),
-          ejeTematico: response.data.ejeTematico.id.toString(),
-          impacto: response.data.impacto.id.toString(),
-          municipio: response.data.municipio.id.toString(),
-          seccion: response.data.seccion.id.toString(),
-          promotor: response.data.promotor.id.toString(),
-        })
-      } catch {
-        toast.error("No se pudo cargar el tipo de lugar")
-      } finally {
-        setIsFetching(false)
-      }
-    }
-
-    if (id) {
-      fetchTipoLugar()
-    }
-  }, [id, form])
+    form.reset({
+      evento: dataEvento.evento,
+      descripcion: dataEvento.descripcion,
+      lugar: dataEvento.lugar,
+      statusEvento: dataEvento.statusEvento,
+      fechaInicio: new Date(dataEvento.fechaInicio),
+      horaInicio: dataEvento.horaInicio,
+      fechaFin: dataEvento.fechaFin ? new Date(dataEvento.fechaFin) : undefined,
+      horaFin: dataEvento.horaFin || undefined,
+      asistentesEsperados: dataEvento.asistentesEsperados.toString(),
+      asistentesReales: dataEvento.asistentesReales?.toString(),
+      latitud: dataEvento.latitud,
+      longitud: dataEvento.longitud,
+      localidad: dataEvento.localidad?.toString(),
+      calificacion: dataEvento.calificacion?.toString(),
+      observaciones: dataEvento.observaciones || undefined,
+      urlRedesSociales: dataEvento.urlRedesSociales || undefined,
+      tpLugar: dataEvento.tipoLugar.id.toString(),
+      tpEvento: dataEvento.tipoEvento.id.toString(),
+      organizador: dataEvento.organizador.id.toString(),
+      ejeTematico: dataEvento.ejeTematico.id.toString(),
+      impacto: dataEvento.impacto.id.toString(),
+      municipio: dataEvento.municipio.id.toString(),
+      seccion: dataEvento.seccion.id.toString(),
+      promotor: dataEvento.promotor.id.toString(),
+    })
+  }, [])
 
   const handleClick = () => {
     if (navigator.geolocation) {
@@ -193,7 +177,7 @@ export default function EditarEventForm({
         idPromotor: Number(data.promotor),
       }
 
-      await axiosInstance.patch(`/eventos/${id}`, eventData)
+      await axiosInstance.patch(`/eventos/${dataEvento.id}`, eventData)
 
       toast.success("Evento actualizado con éxito")
       navigate("/dashboard/eventos")
@@ -203,10 +187,6 @@ export default function EditarEventForm({
     } finally {
       setIsLoading(false)
     }
-  }
-
-  if (isFetching) {
-    return <Loader />
   }
 
   return (
@@ -232,10 +212,7 @@ export default function EditarEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Descripcion{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Descripcion <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Textarea className='resize-none' {...field} />
@@ -476,10 +453,7 @@ export default function EditarEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Localidad{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Localidad <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Input type='localidad' {...field} />
@@ -510,10 +484,7 @@ export default function EditarEventForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Asistentes Reales{" "}
-                  <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                    opcional
-                  </span>
+                  Asistentes Reales <OptionalBadge />
                 </FormLabel>
                 <FormControl>
                   <Input type='number' {...field} />
@@ -610,9 +581,7 @@ export default function EditarEventForm({
                   <FormLabel>
                     <CalendarOffIcon className='size-4' />
                     Fecha
-                    <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                      opcional
-                    </span>
+                    <OptionalBadge />
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -657,9 +626,7 @@ export default function EditarEventForm({
                   <FormLabel>
                     <Clock9Icon className='size-4' />
                     Hora
-                    <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                      opcional
-                    </span>
+                    <OptionalBadge />
                   </FormLabel>
                   <FormControl>
                     <Select
@@ -691,10 +658,7 @@ export default function EditarEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Calificacion{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Calificacion <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Input min={0} max={5} type='number' {...field} />
@@ -710,10 +674,7 @@ export default function EditarEventForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Observaciones{" "}
-                <span className='p-2 py-0.5 rounded-full bg-yellow-200 text-yellow-600 text-xs'>
-                  opcional
-                </span>
+                Observaciones <OptionalBadge />
               </FormLabel>
               <FormControl>
                 <Textarea {...field} />

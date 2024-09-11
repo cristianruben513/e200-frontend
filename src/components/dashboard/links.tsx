@@ -4,6 +4,7 @@ import {
   IoBusinessOutline,
   IoGridOutline,
   IoHomeOutline,
+  IoIdCardOutline
 } from "react-icons/io5"
 
 export const adminLinks = [
@@ -11,7 +12,7 @@ export const adminLinks = [
     href: "/dashboard",
     icon: IoHomeOutline,
     label: "Inicio",
-    perfil: "Staff",
+    perfil: "Administrador",
   },
   {
     href: "/dashboard/eventos",
@@ -36,5 +37,11 @@ export const adminLinks = [
     icon: IoGridOutline,
     label: "Galeria",
     perfil: "Staff",
+  },
+  {
+    href: "/dashboard/usuarios",
+    icon: IoIdCardOutline,
+    label: "Usuarios",
+    perfil: "Administrador",
   },
 ]

@@ -10,6 +10,7 @@ import DashboardIndex from "./pages/dashboard"
 import DashboardNuevoDirectorio from "./pages/dashboard/directorio/nuevo/page"
 import DashboardDirectorio from "./pages/dashboard/directorio/page"
 import DashboardEventoDetail from "./pages/dashboard/eventos/detail/page"
+import DashboardEditarEvento from "./pages/dashboard/eventos/edit/page"
 import DashboardNuevoEvento from "./pages/dashboard/eventos/nuevo/page"
 import DashboardEventos from "./pages/dashboard/eventos/page"
 import DashboardNuevaFoto from "./pages/dashboard/galeria/nuevo/page"
@@ -17,22 +18,19 @@ import DashboardGaleria from "./pages/dashboard/galeria/page"
 import DashboardEditarTipoLugar from "./pages/dashboard/tipo-lugares/edit/page"
 import DashboardNuevoTipoLugar from "./pages/dashboard/tipo-lugares/nuevo/page"
 import DashboardTipoLugares from "./pages/dashboard/tipo-lugares/page"
-import DashboardEditarEvento from "./pages/dashboard/eventos/edit/page"
+import DashboardNuevoUsuario from "./pages/dashboard/usuarios/nuevo/page"
+import DashboardUsuarios from "./pages/dashboard/usuarios/page"
+
+import { Perfil } from "./enums/perfil.enum"
+import DashboardEditarUsuario from "./pages/dashboard/usuarios/editar/page"
 
 function App() {
-  enum Perfil {
-    Administrador = "Administrador",
-    Supervisor = "Supervisor",
-    Staff = "Staff",
-  }
-
   const all = [Perfil.Administrador, Perfil.Staff, Perfil.Supervisor]
 
   return (
     <BrowserRouter>
       <ToasterComponent />
       <Routes>
-        <Route path='/' element={<Redirect />} />
         <Route path='/' element={<Redirect />} />
         <Route
           path='/login'
@@ -140,6 +138,34 @@ function App() {
             <ProtectedRoute
               allowedRoles={all}
               element={<DashboardNuevaFoto />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/usuarios'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardUsuarios />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/nuevo-usuario'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardNuevoUsuario />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-usuario/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardEditarUsuario />}
             />
           }
         />

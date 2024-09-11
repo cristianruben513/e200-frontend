@@ -1,3 +1,4 @@
+import useAuthStore from "@/stores/useAuthStore"
 import React from "react"
 import { Navigate, useLocation } from "react-router-dom"
 
@@ -6,16 +7,19 @@ interface PublicRouteProps {
 }
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ element }) => {
+  const { user } = useAuthStore()
   const isAuthenticated = !!localStorage.getItem("authToken")
   const location = useLocation()
 
-  return !isAuthenticated ? (
-    // Renderiza el componente público si el usuario no está autenticado
-    element
-  ) : (
-    // Redirige al usuario a la página de inicio (o dashboard) si ya está autenticado
-    <Navigate to='/dashboard' state={{ from: location }} />
-  )
+  if (!isAuthenticated) {
+    return element
+  }
+
+  if (user?.perfil === "Staff") {
+    return <Navigate to='/dashboard/eventos' state={{ from: location }} />
+  }
+
+  return <Navigate to='/dashboard' state={{ from: location }} />
 }
 
 export default PublicRoute

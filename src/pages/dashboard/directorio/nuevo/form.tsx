@@ -27,9 +27,9 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
 
+import { Cargo } from "@/types/cargo.interface"
 import { Organizador } from "@/types/evento.interface"
 import { Municipio } from "@/types/municipio.interface"
-import { Cargo } from "@/types/cargo.interface"
 import { Seccion } from "@/types/seccion.interface"
 
 type DirectorioFormValues = z.infer<typeof directorioSchema>

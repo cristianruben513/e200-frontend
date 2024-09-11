@@ -4,6 +4,7 @@ import { Seccion } from "./seccion.interface";
 import { TipoEvento } from "./tipo-evento.interface";
 import { TipoLugar } from "./tipo-lugares.interface";
 import { EjeTematico } from "./eje-tematico.interface";
+import { Perfil } from "./perfil.interface";
 
 export interface Evento {
   id: number;
@@ -42,11 +43,6 @@ export interface Creador {
   createdAt: string; // Formato ISO 8601
   deletedAt: string | null;
   perfil: Perfil;
-}
-
-export interface Perfil {
-  id: number;
-  perfil: string;
 }
 
 export interface Organizador {

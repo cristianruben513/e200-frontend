@@ -26,11 +26,17 @@ export const registerSchema = z.object({
     .string({
       required_error: "La confirmación de la contraseña es requerida",
     }),
-  equipo: z
-    .enum(["E200", "Gobierno"], {
-      required_error: "El equipo es requerido",
-      invalid_type_error: "Equipo inválido",
+  telefono: z
+    .string({
+      required_error: "El teléfono es requerido",
+    })
+    .min(10, {
+      message: "El teléfono debe tener al menos 10 caracteres",
     }),
+  perfil: z
+    .string({
+      required_error: "El perfil es requerido",
+    })
 })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],

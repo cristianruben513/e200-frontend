@@ -1,10 +1,13 @@
 import Loader from "@/components/loader"
 import DasboardLayout from "@/layouts/dashboard"
 import { fetcher } from "@/lib/fetcher"
+import { useParams } from "react-router-dom"
 import useSWR from "swr"
 import EditarEventForm from "./form"
 
 export default function DashboardEditarEvento() {
+  const { id } = useParams()
+
   const { data: dataTipoLugar } = useSWR("/tipo-lugares", fetcher)
   const { data: dataTipoEventos } = useSWR("/tipo-eventos", fetcher)
   const { data: dataOrganizadores } = useSWR("/organizaciones", fetcher)
@@ -14,6 +17,8 @@ export default function DashboardEditarEvento() {
   const { data: dataSecciones } = useSWR("/secciones", fetcher)
   const { data: dataPromotores } = useSWR("/directorios", fetcher)
 
+  const { data: dataEvento } = useSWR(`/eventos/${id}`, fetcher)
+
   const isLoading =
     !dataTipoLugar ||
     !dataTipoEventos ||
@@ -22,7 +27,8 @@ export default function DashboardEditarEvento() {
     !dataImpactos ||
     !dataMunicipios ||
     !dataSecciones ||
-    !dataPromotores
+    !dataPromotores ||
+    !dataEvento
 
   if (isLoading) {
     return (
@@ -45,6 +51,7 @@ export default function DashboardEditarEvento() {
           dataMunicipios={dataMunicipios}
           dataSecciones={dataSecciones}
           dataPromotores={dataPromotores}
+          dataEvento={dataEvento}
         />
       </div>
     </DasboardLayout>

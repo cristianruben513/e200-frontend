@@ -1,5 +1,4 @@
 import axiosInstance from "@/axiosInstance"
-import OptionalBadge from "@/components/optionalBadge"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -17,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { directorioSchema } from "@/validations/directorio"
+import { Perfil } from "@/types/perfil.interface"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderIcon } from "lucide-react"
 import { useState } from "react"
@@ -26,39 +25,39 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
 
-import { Municipio } from "@/types/municipio.interface"
+import { registerSchema } from "@/validations/register"
 
-type DirectorioFormValues = z.infer<typeof directorioSchema>
+type RegisterFormValues = z.infer<typeof registerSchema>
 
-export default function DirectorioForm({
-  dataMunicipios,
+export default function UsuarioForm({
+  dataPerfiles,
 }: {
-  dataMunicipios: Municipio[]
+  dataPerfiles: Perfil[]
 }) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<DirectorioFormValues>({
-    resolver: zodResolver(directorioSchema),
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     mode: "onChange",
   })
 
-  async function onSubmit(data: DirectorioFormValues) {
+  async function onSubmit(data: RegisterFormValues) {
     setIsLoading(true)
 
     try {
-      const directorioData = {
-        nombre: data.nombre,
-        iniciales: data.iniciales,
-        afinidad: data.afinidad,
-        genero: data.genero,
+      const registerData = {
+        username: data.username,
+        password: data.password,
         email: data.email,
-        municipioId: Number(data.municipio),
+        telefono: data.telefono,
+        idPerfil: Number(data.perfil),
       }
-      await axiosInstance.post("/directorios", directorioData)
 
-      toast.success("Entrada en directorio registrada")
-      navigate("/dashboard/directorio")
+      await axiosInstance.post("/auth/register", registerData)
+
+      toast.success("Usuario Creado")
+      navigate("/dashboard/usuarios")
     } catch {
       setIsLoading(false)
       toast.error("Algo salió mal")
@@ -72,10 +71,10 @@ export default function DirectorioForm({
       <form className='grid gap-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name='nombre'
+          name='username'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nombre</FormLabel>
+              <FormLabel>Nombre de usuario</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -86,58 +85,66 @@ export default function DirectorioForm({
 
         <FormField
           control={form.control}
-          name='afinidad'
+          name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Afinidad</FormLabel>
+              <FormLabel>Correo Electronico</FormLabel>
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value='A'>Afin</SelectItem>
-                    <SelectItem value='N'>Neutral</SelectItem>
-                    <SelectItem value='O'>Opositor</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Input type='email' autoComplete='email' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className='grid md:grid-cols-2 gap-5'>
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Email
-                  <OptionalBadge />
-                </FormLabel>
-                <FormControl>
-                  <Input type='email' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name='password'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contraseña</FormLabel>
+              <FormControl>
+                <Input type='password' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
-          name='municipio'
+          name='confirmPassword'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                Municipio
-                <OptionalBadge />
-              </FormLabel>
+              <FormLabel>Confirmar Contraseña</FormLabel>
+              <FormControl>
+                <Input type='password' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='telefono'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Telefono</FormLabel>
+              <FormControl>
+                <Input maxLength={10} minLength={10} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='perfil'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Perfil</FormLabel>
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
@@ -147,9 +154,9 @@ export default function DirectorioForm({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {dataMunicipios?.map((item: Municipio) => (
+                    {dataPerfiles?.map((item: Perfil) => (
                       <SelectItem key={item.id} value={item.id.toString()}>
-                        {item.municipio}
+                        {item.perfil}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -165,7 +172,7 @@ export default function DirectorioForm({
           className='my-3'
         >
           {isLoading && <LoaderIcon className='mr-2 h-4 w-4 animate-spin' />}
-          Registar en directorio
+          Registar usuario
         </Button>
       </form>
     </Form>
