@@ -3,6 +3,7 @@ import { Promotor } from "./promotor.interface";
 import { Seccion } from "./seccion.interface";
 import { TipoEvento } from "./tipo-evento.interface";
 import { TipoLugar } from "./tipo-lugares.interface";
+import { EjeTematico } from "./eje-tematico.interface";
 
 export interface Evento {
   id: number;
@@ -51,11 +52,6 @@ export interface Perfil {
 export interface Organizador {
   id: number;
   organizador: string;
-}
-
-export interface EjeTematico {
-  id: number;
-  ejeTematico: string;
 }
 
 export interface Impacto {

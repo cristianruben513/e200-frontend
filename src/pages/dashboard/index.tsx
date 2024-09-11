@@ -2,17 +2,21 @@ import axiosInstance from "@/axiosInstance"
 import FiltroDistritoLocal from "@/components/filtros/filtroDistrito"
 import FiltroMunicipio from "@/components/filtros/filtroMunicipio"
 import FiltroPromotor from "@/components/filtros/filtroPromotor"
+import Loader from "@/components/loader"
 import MainMap from "@/components/mainMap"
 import DasboardLayout from "@/layouts/dashboard"
+import { cn } from "@/lib/utils"
 import { Evento } from "@/types/evento.interface"
 import { Promotor } from "@/types/promotor.interface"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
+import useSWR from "swr"
+
+const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data)
 
 export default function DashboardIndex() {
-  const [data, setData] = useState<Evento[]>([])
-  const [promotores, setPromotores] = useState<Promotor[]>([])
-  const [municipios, setMunicipios] = useState<string[]>([])
-  const [distritosLocales, setDistritosLocales] = useState<number[]>([])
+  const { data: eventos, error } = useSWR<Evento[]>("/eventos", fetcher)
+
+  // States for selected filters
   const [promotorSeleccionado, setPromotorSeleccionado] =
     useState<Promotor | null>(null)
   const [municipioSeleccionado, setMunicipioSeleccionado] = useState<
@@ -22,69 +26,80 @@ export default function DashboardIndex() {
     number | null
   >(null)
 
-  const [mapaSeleccionado, setMapaSeleccionado] = useState<
-    "secciones" | "municipios"
-  >("secciones")
+  const [mapView, setMapView] = useState("secciones")
 
-  const fetchData = async () => {
-    try {
-      const response = await axiosInstance.get("/eventos")
-      setData(response.data)
+  // Extract unique promotores, municipios, and distritosLocales from the data
+  const promotores = useMemo(() => {
+    if (!eventos) return []
+    const promotoresUnicos = Array.from(
+      new Set(eventos.map((evento) => evento.promotor.id))
+    ).map(
+      (id) => eventos.find((evento) => evento.promotor.id === id)?.promotor
+    ) as Promotor[]
+    return promotoresUnicos
+  }, [eventos])
 
-      const promotoresUnicos = Array.from(
-        new Set(response.data.map((evento: Evento) => evento.promotor.id))
-      ).map(
-        (id) =>
-          response.data.find((evento: Evento) => evento.promotor.id === id)
-            ?.promotor
-      ) as Promotor[]
-      setPromotores(promotoresUnicos)
+  const municipios = useMemo(() => {
+    if (!eventos) return []
+    return Array.from(
+      new Set(eventos.map((evento) => evento.municipio.municipio))
+    ) as string[]
+  }, [eventos])
 
-      const municipiosUnicos = Array.from(
-        new Set(
-          response.data.map((evento: Evento) => evento.municipio.municipio)
-        )
-      ) as string[]
-      setMunicipios(municipiosUnicos)
+  const distritosLocales = useMemo(() => {
+    if (!eventos) return []
+    return Array.from(
+      new Set(eventos.map((evento) => evento.seccion.distritoLocal))
+    ) as number[]
+  }, [eventos])
 
-      const distritosLocalesUnicos = Array.from(
-        new Set(
-          response.data.map((evento: Evento) => evento.seccion.distritoLocal)
-        )
-      ) as number[]
-      setDistritosLocales(distritosLocalesUnicos)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  // Filter events based on selected filters
+  const eventosFiltrados = useMemo(() => {
+    if (!eventos) return []
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+    return eventos.filter((evento) => {
+      const matchPromotor = promotorSeleccionado
+        ? evento.promotor.id === promotorSeleccionado.id
+        : true
+      const matchMunicipio = municipioSeleccionado
+        ? evento.municipio.municipio === municipioSeleccionado
+        : true
+      const matchDistritoLocal = distritoLocalSeleccionado
+        ? evento.seccion.distritoLocal === distritoLocalSeleccionado
+        : true
+      return matchPromotor && matchMunicipio && matchDistritoLocal
+    })
+  }, [
+    eventos,
+    promotorSeleccionado,
+    municipioSeleccionado,
+    distritoLocalSeleccionado,
+  ])
 
-  const eventosFiltrados = data.filter((evento) => {
-    const matchPromotor = promotorSeleccionado
-      ? evento.promotor.id === promotorSeleccionado.id
-      : true
-    const matchMunicipio = municipioSeleccionado
-      ? evento.municipio.municipio === municipioSeleccionado
-      : true
-    const matchDistritoLocal = distritoLocalSeleccionado
-      ? evento.seccion.distritoLocal === distritoLocalSeleccionado
-      : true
-    return matchPromotor && matchMunicipio && matchDistritoLocal
-  })
-
-  const markers = eventosFiltrados.map((evento) => ({
-    latitud: Number(evento.latitud.replace(",", ".")),
-    longitud: Number(evento.longitud.replace(",", ".")),
-    marcador: evento.promotor.marcador,
-    nombreEvento: evento.evento,
-    fechaInicio: evento.fechaInicio,
-  }))
+  // Create markers for the map
+  const markers = useMemo(
+    () =>
+      eventosFiltrados.map((evento) => ({
+        latitud: Number(evento.latitud.replace(",", ".")),
+        longitud: Number(evento.longitud.replace(",", ".")),
+        marcador: evento.promotor.marcador,
+        nombreEvento: evento.evento,
+        fechaInicio: evento.fechaInicio,
+      })),
+    [eventosFiltrados]
+  )
 
   const lat = 20.689728
   const lng = -100.064524
+
+  if (error) return <div>Error al cargar los eventos</div>
+  if (!eventos) {
+    return (
+      <DasboardLayout>
+        <Loader />
+      </DasboardLayout>
+    )
+  }
 
   return (
     <DasboardLayout>
@@ -98,22 +113,22 @@ export default function DashboardIndex() {
             </p>
             <div className='flex space-x-2'>
               <button
-                className={`${
-                  mapaSeleccionado === "secciones"
-                    ? "bg-blue-500 text-white"
-                    : "bg-neutral-200 text-blue-500"
-                } px-4 py-2 rounded-md`}
-                onClick={() => setMapaSeleccionado("secciones")}
+                className={cn(
+                  "px-4 py-2 rounded-md",
+                  mapView === "secciones" && "bg-blue-500 text-white",
+                  mapView !== "secciones" && "bg-neutral-200 text-blue-500"
+                )}
+                onClick={() => setMapView("secciones")}
               >
                 Distritos
               </button>
               <button
-                className={`${
-                  mapaSeleccionado === "municipios"
-                    ? "bg-blue-500 text-white"
-                    : "bg-neutral-200 text-blue-500"
-                } px-4 py-2 rounded-md`}
-                onClick={() => setMapaSeleccionado("municipios")}
+                className={cn(
+                  "px-4 py-2 rounded-md",
+                  mapView === "municipios" && "bg-blue-500 text-white",
+                  mapView !== "municipios" && "bg-neutral-200 text-blue-500"
+                )}
+                onClick={() => setMapView("municipios")}
               >
                 Municipios
               </button>
@@ -141,7 +156,7 @@ export default function DashboardIndex() {
           />
         </div>
 
-        {mapaSeleccionado === "secciones" ? (
+        {mapView === "secciones" ? (
           <div className='h-[530px] mb-10'>
             <p className='mb-3 font-semibold'>
               Mapa con division por distritos

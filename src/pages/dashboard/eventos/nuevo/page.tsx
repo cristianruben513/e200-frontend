@@ -1,66 +1,30 @@
-import axiosInstance from "@/axiosInstance"
 import Loader from "@/components/loader"
 import DasboardLayout from "@/layouts/dashboard"
-import { EjeTematico, Impacto, Organizador } from "@/types/evento.interface"
-import { Municipio } from "@/types/municipio.interface"
-import { Promotor } from "@/types/promotor.interface"
-import { Seccion } from "@/types/seccion.interface"
-import { TipoEvento } from "@/types/tipo-evento.interface"
-import { TipoLugar } from "@/types/tipo-lugares.interface"
-import { useEffect, useState } from "react"
+import { fetcher } from "@/lib/fetcher"
+import useSWR from "swr"
 import NewEventForm from "./form"
 
 export default function DashboardNuevoEvento() {
-  const [loading, setLoading] = useState(false)
+  const { data: tipoLugar } = useSWR("/tipo-lugares", fetcher)
+  const { data: tipoEventos } = useSWR("/tipo-eventos", fetcher)
+  const { data: organizadores } = useSWR("/organizaciones", fetcher)
+  const { data: ejesTematicos } = useSWR("/eje-tematicos", fetcher)
+  const { data: impactos } = useSWR("/impactos", fetcher)
+  const { data: municipios } = useSWR("/municipios", fetcher)
+  const { data: secciones } = useSWR("/secciones", fetcher)
+  const { data: promotores } = useSWR("/directorios", fetcher)
 
-  const [dataTipoLugar, setDataTipoLugar] = useState<TipoLugar[]>([])
-  const [dataTipoEventos, setDataTipoEventos] = useState<TipoEvento[]>([])
-  const [dataOrganizadores, setDataOrganizadores] = useState<Organizador[]>([])
-  const [dataEjesTematicos, setDataEjesTematicos] = useState<EjeTematico[]>([])
-  const [dataImpactos, setDataImpactos] = useState<Impacto[]>([])
-  const [dataMunicipios, setDataMunicipios] = useState<Municipio[]>([])
-  const [dataSecciones, setDataSecciones] = useState<Seccion[]>([])
-  const [dataPromotores, setDataPromotores] = useState<Promotor[]>([])
+  const isLoading =
+    !tipoLugar ||
+    !tipoEventos ||
+    !organizadores ||
+    !ejesTematicos ||
+    !impactos ||
+    !municipios ||
+    !secciones ||
+    !promotores
 
-  const fetchData = async () => {
-    try {
-      setLoading(true)
-
-      const responseTipoLugar = await axiosInstance.get("/tipo-lugares")
-      setDataTipoLugar(responseTipoLugar.data)
-
-      const responseTipoEventos = await axiosInstance.get("/tipo-eventos")
-      setDataTipoEventos(responseTipoEventos.data)
-
-      const responseOrganizadores = await axiosInstance.get("/organizaciones")
-      setDataOrganizadores(responseOrganizadores.data)
-
-      const responseEjesTematicos = await axiosInstance.get("/eje-tematicos")
-      setDataEjesTematicos(responseEjesTematicos.data)
-
-      const responseImpactos = await axiosInstance.get("/impactos")
-      setDataImpactos(responseImpactos.data)
-
-      const responseMunicipios = await axiosInstance.get("/municipios")
-      setDataMunicipios(responseMunicipios.data)
-
-      const responseSecciones = await axiosInstance.get("/secciones")
-      setDataSecciones(responseSecciones.data)
-
-      const responsePromotores = await axiosInstance.get("/directorios")
-      setDataPromotores(responsePromotores.data)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  if (loading) {
+  if (isLoading) {
     return (
       <DasboardLayout>
         <Loader />
@@ -70,18 +34,18 @@ export default function DashboardNuevoEvento() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20     '>
+      <div className='md:mx-20'>
         <h1 className='text-xl font-bold mb-7'>Registrar evento</h1>
 
         <NewEventForm
-          dataTipoLugares={dataTipoLugar}
-          dataTipoEventos={dataTipoEventos}
-          dataOrganizadores={dataOrganizadores}
-          dataEjesTematicos={dataEjesTematicos}
-          dataImpactos={dataImpactos}
-          dataMunicipios={dataMunicipios}
-          dataSecciones={dataSecciones}
-          dataPromotores={dataPromotores}
+          dataTipoLugares={tipoLugar}
+          dataTipoEventos={tipoEventos}
+          dataOrganizadores={organizadores}
+          dataEjesTematicos={ejesTematicos}
+          dataImpactos={impactos}
+          dataMunicipios={municipios}
+          dataSecciones={secciones}
+          dataPromotores={promotores}
         />
       </div>
     </DasboardLayout>

@@ -1,37 +1,21 @@
-import axiosInstance from "@/axiosInstance"
 import CalendarioEventos from "@/components/calendar/calendar"
 import Loader from "@/components/loader"
 import { buttonVariants } from "@/components/ui/button"
 import DasboardLayout from "@/layouts/dashboard"
+import { fetcher } from "@/lib/fetcher"
 import { cn } from "@/lib/utils"
 import { Evento } from "@/types/evento.interface"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
+import useSWR from "swr"
 import EventosTable from "./eventos-table"
 
 export default function DashboardEventos() {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<Evento[]>([])
+  const [viewType, setViewType] = useState("agenda")
 
-  const [viewType, setViewType] = useState<"agenda" | "lista">("agenda")
+  const { data, isLoading } = useSWR<Evento[]>("/eventos", fetcher)
 
-  const fetchData = async () => {
-    try {
-      setLoading(true)
-      const response = await axiosInstance.get("/eventos")
-      setData(response.data)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  if (loading) {
+  if (isLoading || !data) {
     return (
       <DasboardLayout>
         <Loader />
@@ -41,7 +25,7 @@ export default function DashboardEventos() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20     '>
+      <div className='md:mx-20'>
         <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
           <h1 className='text-xl font-bold'>Eventos</h1>
 
@@ -56,21 +40,21 @@ export default function DashboardEventos() {
         <div className='p-4 bg-neutral-100 rounded-xl mb-5'>
           <div className='flex space-x-2'>
             <button
-              className={`${
-                viewType === "agenda"
-                  ? "bg-blue-500 text-white"
-                  : "bg-neutral-200 text-blue-500"
-              } px-4 py-2 rounded-md w-full`}
+              className={cn(
+                "px-4 py-2 rounded-md w-full",
+                viewType === "agenda" && "bg-blue-500 text-white",
+                viewType !== "agenda" && "bg-neutral-200 text-blue-500"
+              )}
               onClick={() => setViewType("agenda")}
             >
               Agenda
             </button>
             <button
-              className={`${
-                viewType === "lista"
-                  ? "bg-blue-500 text-white"
-                  : "bg-neutral-200 text-blue-500"
-              } px-4 py-2 rounded-md w-full`}
+              className={cn(
+                "px-4 py-2 rounded-md w-full",
+                viewType === "lista" && "bg-blue-500 text-white",
+                viewType !== "lista" && "bg-neutral-200 text-blue-500"
+              )}
               onClick={() => setViewType("lista")}
             >
               Lista

@@ -1,34 +1,17 @@
-import axiosInstance from "@/axiosInstance"
 import Loader from "@/components/loader"
 import { buttonVariants } from "@/components/ui/button"
 import DasboardLayout from "@/layouts/dashboard"
+import { fetcher } from "@/lib/fetcher"
 import { cn } from "@/lib/utils"
 import { Promotor } from "@/types/promotor.interface"
-import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import useSWR from "swr"
 import DirectorioTable from "./directorio-table"
 
 export default function DashboardDirectorio() {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<Promotor[]>([])
+  const { data, isLoading } = useSWR<Promotor[]>("/directorios", fetcher)
 
-  const fetchData = async () => {
-    try {
-      setLoading(true)
-      const response = await axiosInstance.get("/directorios")
-      setData(response.data)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  if (loading) {
+  if (isLoading || !data) {
     return (
       <DasboardLayout>
         <Loader />
@@ -38,7 +21,7 @@ export default function DashboardDirectorio() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20     '>
+      <div className='md:mx-20'>
         <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
           <h1 className='text-xl font-bold'>Directorio</h1>
 
