@@ -46,6 +46,8 @@ export default function UsuarioForm({
     mode: "onChange",
   })
 
+  console.log(dataUsuario.perfil)
+
   useEffect(() => {
     form.reset({
       username: dataUsuario.username,

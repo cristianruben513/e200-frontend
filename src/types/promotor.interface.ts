@@ -6,13 +6,15 @@ import { Seccion } from "./seccion.interface";
 export interface Promotor {
   id: number;
   nombre: string;
+  iniciales: string;
   genero: string;
-  celular: string;
-  email: string;
+  afinidad: string;
+  celular: string | null;
+  email: string | null;
   comentario: string | null;
   marcador: string;
-  municipio: Municipio;
+  municipio: Municipio | null;
   organizacion: Organizacion;
   cargo: Cargo;
-  seccion: Seccion;
+  seccion: Seccion | null;
 }

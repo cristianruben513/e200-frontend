@@ -19,13 +19,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, EditIcon, TrashIcon } from "lucide-react"
+import { ArrowUpDown, EditIcon } from "lucide-react"
 import { useState } from "react"
-import { toast } from "sonner"
 
 import { TablePagination } from "@/components/tables/pagination"
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { Organizacion } from "@/types/organizacion.interface"
 import { Promotor } from "@/types/promotor.interface"
+import { Link } from "react-router-dom"
 
 const columns: ColumnDef<Promotor>[] = [
   {
@@ -89,23 +91,17 @@ const columns: ColumnDef<Promotor>[] = [
   {
     id: "actions",
     header: () => <div className='text-center'>Acciones</div>,
-    cell: () => {
+    cell: ({ row }) => {
+      const id = row.getValue("id")
+
       return (
         <div className='flex justify-center items-center gap-4'>
-          <Button
-            variant='outline'
-            size='icon'
-            onClick={() => toast.success("Actualizar")}
+          <Link
+            to={`/dashboard/editar-promotor/${id}`}
+            className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
           >
             <EditIcon className='size-4' />
-          </Button>
-          <Button
-            variant='outline'
-            size='icon'
-            onClick={() => toast.warning("Borrando ...")}
-          >
-            <TrashIcon className='size-4' />
-          </Button>
+          </Link>
         </div>
       )
     },

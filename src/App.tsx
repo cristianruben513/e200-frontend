@@ -22,6 +22,7 @@ import DashboardNuevoUsuario from "./pages/dashboard/usuarios/nuevo/page"
 import DashboardUsuarios from "./pages/dashboard/usuarios/page"
 
 import { Perfil } from "./enums/perfil.enum"
+import DashboardEditarDirectorio from "./pages/dashboard/directorio/editar/page"
 import DashboardEditarUsuario from "./pages/dashboard/usuarios/editar/page"
 
 function App() {
@@ -85,7 +86,7 @@ function App() {
           path='/dashboard/directorio'
           element={
             <ProtectedRoute
-              allowedRoles={all}
+              allowedRoles={[Perfil.Administrador]}
               element={<DashboardDirectorio />}
             />
           }
@@ -94,8 +95,17 @@ function App() {
           path='/dashboard/nuevo-directorio'
           element={
             <ProtectedRoute
-              allowedRoles={all}
+              allowedRoles={[Perfil.Administrador]}
               element={<DashboardNuevoDirectorio />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-promotor/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardEditarDirectorio />}
             />
           }
         />
