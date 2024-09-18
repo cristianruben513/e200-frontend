@@ -1,7 +1,7 @@
 import { Menubar } from "@/components/ui/menubar"
 import LogoutButton from "../logoutButton"
-import MobileMenu from "./mobile-menu"
 import { UserMenu } from "../userMenu"
+import MobileMenu from "./mobile-menu"
 
 export function Menu() {
   return (
@@ -12,7 +12,9 @@ export function Menu() {
 
       <div className='flex items-center gap-3'>
         <UserMenu />
-        <LogoutButton />
+        <div className="md:flex hidden">
+          <LogoutButton />
+        </div>
         <MobileMenu />
       </div>
     </Menubar>

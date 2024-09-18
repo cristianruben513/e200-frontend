@@ -3,7 +3,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import useAuthStore from "@/stores/useAuthStore"
 import { IoMenuOutline } from "react-icons/io5"
 import { useLocation } from "react-router-dom"
-import LogoutButton from "../logoutButton"
 import { UserMenu } from "../userMenu"
 import { adminLinks } from "./links"
 import { MobileMenuItem } from "./mobile-menu-item"
@@ -50,7 +49,6 @@ export default function MobileMenu() {
               </div>
 
               <UserMenu />
-              <LogoutButton />
             </div>
           </SheetContent>
         </Sheet>

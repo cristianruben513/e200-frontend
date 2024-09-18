@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/; // Formato HH:mm
+//const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/; // Formato HH:mm
 
 export const eventSchema = z.object({
   evento: z
@@ -32,9 +32,6 @@ export const eventSchema = z.object({
   horaInicio: z
     .string({
       required_error: "La hora de inicio es requerida",
-    })
-    .refine((val) => timeRegex.test(val), {
-      message: "La hora de inicio debe estar en formato HH:mm",
     }),
   fechaFin: z.date().optional(),
   horaFin: z.string().optional(),
