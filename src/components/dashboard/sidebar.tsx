@@ -3,7 +3,6 @@ import useAuthStore from "@/stores/useAuthStore"
 import { useLocation } from "react-router-dom"
 import { adminLinks } from "./links"
 import { SideBarItem } from "./sidebar-item"
-import LogoutButton from "../logoutButton"
 
 export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const location = useLocation()
@@ -37,8 +36,6 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
             {option.label}
           </SideBarItem>
         ))}
-
-        <LogoutButton />
       </div>
     </div>
   )

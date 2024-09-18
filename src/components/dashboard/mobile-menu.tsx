@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom"
 import { UserMenu } from "../userMenu"
 import { adminLinks } from "./links"
 import { MobileMenuItem } from "./mobile-menu-item"
+import LogoutButton from "../logoutButton"
 
 export default function MobileMenu() {
   const location = useLocation()
@@ -49,6 +50,7 @@ export default function MobileMenu() {
               </div>
 
               <UserMenu />
+              <LogoutButton />
             </div>
           </SheetContent>
         </Sheet>

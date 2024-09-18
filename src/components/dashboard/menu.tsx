@@ -1,5 +1,4 @@
 import { Menubar } from "@/components/ui/menubar"
-import LogoutButton from "../logoutButton"
 import { UserMenu } from "../userMenu"
 import MobileMenu from "./mobile-menu"
 
@@ -12,9 +11,6 @@ export function Menu() {
 
       <div className='flex items-center gap-3'>
         <UserMenu />
-        <div className="md:flex hidden">
-          <LogoutButton />
-        </div>
         <MobileMenu />
       </div>
     </Menubar>
