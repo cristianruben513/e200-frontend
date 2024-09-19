@@ -13,7 +13,9 @@ export function SideBarItem({ currentPathname, href, children }: LinkProps) {
     <Link
       to={href}
       className={cn(
-        buttonVariants({ variant: currentPathname === href ? "secondary" : "ghost" }),
+        buttonVariants({
+          variant: currentPathname === href ? "secondary" : "ghost",
+        }),
         "w-full justify-start"
       )}
     >

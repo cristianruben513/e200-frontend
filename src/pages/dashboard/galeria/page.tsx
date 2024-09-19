@@ -8,9 +8,9 @@ import { Link } from "react-router-dom"
 import useSWR from "swr"
 
 export default function DashboardGaleria() {
-  const { data: dataFotos, isLoading } = useSWR<Foto[]>("/fotos", fetcher)
+  const { data: dataFotos } = useSWR<Foto[]>("/fotos", fetcher)
 
-  if (isLoading) {
+  if (!dataFotos) {
     return (
       <DasboardLayout>
         <Loader />

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { fetcher } from "@/lib/fetcher"
-import { tipoLugarSchema } from "@/validations/tipoLugar"
+import { cargoSchema } from "@/validations/cargo"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderIcon } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -21,17 +21,17 @@ import { toast } from "sonner"
 import useSWR from "swr"
 import { z } from "zod"
 
-type TipoLugarFormValues = z.infer<typeof tipoLugarSchema>
+type CargoFormValues = z.infer<typeof cargoSchema>
 
-export default function EditarTipoLugarForm() {
+export default function EditarCargoForm() {
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(false)
 
   const { data, isValidating } = useSWR(`/tipo-lugares/${id}`, fetcher)
 
-  const form = useForm<TipoLugarFormValues>({
-    resolver: zodResolver(tipoLugarSchema),
+  const form = useForm<CargoFormValues>({
+    resolver: zodResolver(cargoSchema),
     mode: "onChange",
   })
 
@@ -39,21 +39,16 @@ export default function EditarTipoLugarForm() {
   useEffect(() => {
     if (data) {
       form.reset({
-        tipoLugar: data.tipoLugar,
+        cargo: data.cargo,
       })
     }
   }, [data, form])
 
-  async function onSubmit(data: TipoLugarFormValues) {
+  async function onSubmit(data: CargoFormValues) {
     setIsLoading(true)
 
     try {
-      const tipoLugarData = {
-        tipoLugar: data.tipoLugar,
-      }
-
-      // Usar PUT o PATCH para actualizar el tipo de lugar
-      await axiosInstance.patch(`/tipo-lugares/${id}`, tipoLugarData)
+      await axiosInstance.patch(`/tipo-lugares/${id}`, { cargo: data.cargo })
 
       toast.success("Tipo de lugar actualizado con éxito")
       navigate("/dashboard/tipo-lugares")
@@ -74,10 +69,10 @@ export default function EditarTipoLugarForm() {
       <form className='grid gap-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name='tipoLugar'
+          name='cargo'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nombre del tipo de lugar</FormLabel>
+              <FormLabel>Nombre del tipo de cargo</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -91,7 +86,7 @@ export default function EditarTipoLugarForm() {
           disabled={isLoading || !form.formState.isValid}
         >
           {isLoading && <LoaderIcon className='mr-2 h-4 w-4 animate-spin' />}
-          Actualizar tipo de lugar
+          Actualizar cargo
         </Button>
       </form>
     </Form>

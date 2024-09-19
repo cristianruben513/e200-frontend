@@ -18,7 +18,7 @@ export default function CalendarioEventos({ eventos }: { eventos: Evento[] }) {
   const eventosMapeados = mapearEventos(eventos)
 
   return (
-    <div className="bg-neutral-100 p-4 rounded-xl max-w-md md:max-w-4xl mx-auto">
+    <div className="bg-neutral-100 p-4 rounded-xl max-w-md md:max-w-5xl mx-auto">
       <Calendar
         localizer={localizer}
         events={eventosMapeados}

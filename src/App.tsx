@@ -6,7 +6,6 @@ import PublicRoute from "./components/publicRoute"
 import Redirect from "./components/redirect"
 
 import LoginPage from "./pages/auth/login/page"
-import DashboardIndex from "./pages/dashboard"
 import DashboardNuevoDirectorio from "./pages/dashboard/directorio/nuevo/page"
 import DashboardDirectorio from "./pages/dashboard/directorio/page"
 import DashboardEventoDetail from "./pages/dashboard/eventos/detail/page"
@@ -15,6 +14,7 @@ import DashboardNuevoEvento from "./pages/dashboard/eventos/nuevo/page"
 import DashboardEventos from "./pages/dashboard/eventos/page"
 import DashboardNuevaFoto from "./pages/dashboard/galeria/nuevo/page"
 import DashboardGaleria from "./pages/dashboard/galeria/page"
+import DashboardIndex from "./pages/dashboard/inicio"
 import DashboardEditarTipoLugar from "./pages/dashboard/tipo-lugares/edit/page"
 import DashboardNuevoTipoLugar from "./pages/dashboard/tipo-lugares/nuevo/page"
 import DashboardTipoLugares from "./pages/dashboard/tipo-lugares/page"
@@ -22,8 +22,18 @@ import DashboardNuevoUsuario from "./pages/dashboard/usuarios/nuevo/page"
 import DashboardUsuarios from "./pages/dashboard/usuarios/page"
 
 import { Perfil } from "./enums/perfil.enum"
+import DashboardEditarCargo from "./pages/dashboard/cargos/edit/page"
+import DashboardNuevoCargo from "./pages/dashboard/cargos/nuevo/page"
+import DashboardCargos from "./pages/dashboard/cargos/page"
 import DashboardEditarDirectorio from "./pages/dashboard/directorio/editar/page"
+import DashboardMenuOptions from "./pages/dashboard/menu/page"
+import DashboardEditarTipoEvento from "./pages/dashboard/tipo-eventos/edit/page"
+import DashboardNuevoTipoEvento from "./pages/dashboard/tipo-eventos/nuevo/page"
+import DashboardTipoEventos from "./pages/dashboard/tipo-eventos/page"
 import DashboardEditarUsuario from "./pages/dashboard/usuarios/editar/page"
+import DashboardEjeTematicos from "./pages/dashboard/eje-tematicos/page"
+import DashboardNuevoEjeTematico from "./pages/dashboard/eje-tematicos/nuevo/page"
+import DashboardEditarEjeTematico from "./pages/dashboard/eje-tematicos/edit/page"
 
 function App() {
   const all = [Perfil.Administrador, Perfil.Staff, Perfil.Supervisor]
@@ -136,6 +146,87 @@ function App() {
             />
           }
         />
+
+        <Route
+          path='/dashboard/tipo-eventos'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardTipoEventos />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/nuevo-tipo-evento'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoTipoEvento />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-tipo-evento/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEditarTipoEvento />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/eje-tematicos'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEjeTematicos />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/nuevo-eje-tematico'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoEjeTematico />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-eje-tematico/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEditarEjeTematico />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/cargos'
+          element={
+            <ProtectedRoute allowedRoles={all} element={<DashboardCargos />} />
+          }
+        />
+        <Route
+          path='/dashboard/nuevo-cargo'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoCargo />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-cargo/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEditarCargo />}
+            />
+          }
+        />
         <Route
           path='/dashboard/galeria'
           element={
@@ -176,6 +267,16 @@ function App() {
             <ProtectedRoute
               allowedRoles={[Perfil.Administrador]}
               element={<DashboardEditarUsuario />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/menus'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardMenuOptions />}
             />
           }
         />

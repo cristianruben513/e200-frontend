@@ -23,18 +23,16 @@ export default function DashboardNuevoDirectorio() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <h1 className='text-xl font-bold mb-7'>
-          Registrar entrada en Directorio
-        </h1>
+      <h1 className='text-xl font-bold mb-7'>
+        Registrar entrada en Directorio
+      </h1>
 
-        <DirectorioForm
-          dataOrganizadores={dataOrganizadores}
-          dataMunicipios={dataMunicipios}
-          dataCargos={dataCargos}
-          dataSecciones={dataSecciones}
-        />
-      </div>
+      <DirectorioForm
+        dataOrganizadores={dataOrganizadores}
+        dataMunicipios={dataMunicipios}
+        dataCargos={dataCargos}
+        dataSecciones={dataSecciones}
+      />
     </DasboardLayout>
   )
 }

@@ -20,20 +20,18 @@ export default function DashboardUsuarios() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
-          <h1 className='text-xl font-bold'>Usuarios</h1>
+      <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
+        <h1 className='text-xl font-bold'>Usuarios</h1>
 
-          <Link
-            to='/dashboard/nuevo-usuario'
-            className={cn(buttonVariants(), "w-fit")}
-          >
-            Agregar usuario
-          </Link>
-        </div>
-
-        <UsuariosTable dataUsuarios={data} />
+        <Link
+          to='/dashboard/nuevo-usuario'
+          className={cn(buttonVariants(), "w-fit")}
+        >
+          Agregar usuario
+        </Link>
       </div>
+
+      <UsuariosTable dataUsuarios={data} />
     </DasboardLayout>
   )
 }

@@ -1,29 +1,31 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { filterLinksByProfile, groupLinksByCategory } from "@/lib/sidebarUtils"
 import useAuthStore from "@/stores/useAuthStore"
 import { IoMenuOutline } from "react-icons/io5"
 import { useLocation } from "react-router-dom"
 import LogoutButton from "../logoutButton"
-import { UserMenu } from "../userMenu"
-import { adminLinks } from "./links"
-import { MobileMenuItem } from "./mobile-menu-item"
+import { links } from "./links"
+import { SideBarItem } from "./sidebar-item"
 
 export default function MobileMenu() {
   const location = useLocation()
   const pathname = location.pathname
-
-  // mostrar solo los links que corresponden al perfil del usuario
-  // si es Administrador, mostrar todos los links
-  // si es Supervisor, mostrar solo los links que tienen perfil "Supervisor" y "Staff"
-  // si es Staff, mostrar solo los links que tienen perfil "Staff"
   const { user } = useAuthStore()
 
-  const filteredLinks = adminLinks.filter(
-    (link) =>
-      user?.perfil === "Administrador" ||
-      (user?.perfil === "Supervisor" && link.perfil !== "Administrador") ||
-      (user?.perfil === "Staff" && link.perfil === "Staff")
-  )
+  if (!user) return null
+
+  // Filtrar los enlaces según el perfil del usuario
+  const filteredLinks = filterLinksByProfile(links, user.perfil)
+
+  // Agrupar los enlaces por categoría
+  const groupedLinks = groupLinksByCategory(filteredLinks)
 
   return (
     <div className='flex lg:hidden w-full'>
@@ -35,24 +37,38 @@ export default function MobileMenu() {
             </Button>
           </SheetTrigger>
           <SheetContent>
-            <div className='flex flex-col justify-between h-full'>
-              <div className='grid gap-2 mt-4'>
-                {filteredLinks.map((option, index) => (
-                  <MobileMenuItem
-                    key={index}
-                    currentPathname={pathname}
-                    href={option.href}
+            <div className='space-y-4'>
+              {Object.entries(groupedLinks).map(([categoria, links]) => (
+                <Accordion type='single' collapsible className='w-full'>
+                  <AccordionItem
+                    className='bg-neutral-200 rounded-xl p-2 py-0'
+                    value={categoria}
                   >
-                    <option.icon className='text-xl mr-3' />
-                    {option.label}
-                  </MobileMenuItem>
-                ))}
-              </div>
-
-              <div className="grid gap-3">
-                <UserMenu />
-                <LogoutButton />
-              </div>
+                    <AccordionTrigger>
+                      <h3 className='px-4 font-semibold'>
+                        {categoria}
+                      </h3>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className='grid gap-2'>
+                        {links.map((option, index) => (
+                          <SideBarItem
+                            key={index}
+                            currentPathname={pathname}
+                            href={option.href}
+                          >
+                            <option.icon className='text-xl mr-3' />
+                            {option.label}
+                          </SideBarItem>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ))}
+            </div>
+            <div className='flex flex-col justify-between h-full mt-5'>
+              <LogoutButton />
             </div>
           </SheetContent>
         </Sheet>

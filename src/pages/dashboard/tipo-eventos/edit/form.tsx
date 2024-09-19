@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { fetcher } from "@/lib/fetcher"
-import { tipoLugarSchema } from "@/validations/tipoLugar"
+import { tipoEventoSchema } from "@/validations/tipoEvento"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderIcon } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -21,25 +21,24 @@ import { toast } from "sonner"
 import useSWR from "swr"
 import { z } from "zod"
 
-type TipoLugarFormValues = z.infer<typeof tipoLugarSchema>
+type TipoLugarFormValues = z.infer<typeof tipoEventoSchema>
 
 export default function EditarTipoLugarForm() {
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(false)
 
-  const { data, isValidating } = useSWR(`/tipo-lugares/${id}`, fetcher)
+  const { data, isValidating } = useSWR(`/tipo-eventos/${id}`, fetcher)
 
   const form = useForm<TipoLugarFormValues>({
-    resolver: zodResolver(tipoLugarSchema),
+    resolver: zodResolver(tipoEventoSchema),
     mode: "onChange",
   })
 
-  // Actualizar el formulario con los datos obtenidos de SWR
   useEffect(() => {
     if (data) {
       form.reset({
-        tipoLugar: data.tipoLugar,
+        tipoEvento: data.tipoEvento,
       })
     }
   }, [data, form])
@@ -48,13 +47,9 @@ export default function EditarTipoLugarForm() {
     setIsLoading(true)
 
     try {
-      const tipoLugarData = {
-        tipoLugar: data.tipoLugar,
-      }
-
-      // Usar PUT o PATCH para actualizar el tipo de lugar
-      await axiosInstance.patch(`/tipo-lugares/${id}`, tipoLugarData)
-
+      await axiosInstance.patch(`/tipo-lugares/${id}`, {
+        tipoEvento: data.tipoEvento,
+      })
       toast.success("Tipo de lugar actualizado con éxito")
       navigate("/dashboard/tipo-lugares")
     } catch {
@@ -74,10 +69,10 @@ export default function EditarTipoLugarForm() {
       <form className='grid gap-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name='tipoLugar'
+          name='tipoEvento'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nombre del tipo de lugar</FormLabel>
+              <FormLabel>Nombre del tipo de evento</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -91,7 +86,7 @@ export default function EditarTipoLugarForm() {
           disabled={isLoading || !form.formState.isValid}
         >
           {isLoading && <LoaderIcon className='mr-2 h-4 w-4 animate-spin' />}
-          Actualizar tipo de lugar
+          Actualizar tipo de evento
         </Button>
       </form>
     </Form>

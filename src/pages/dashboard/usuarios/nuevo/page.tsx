@@ -19,13 +19,9 @@ export default function DashboardNuevoUsuario() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <h1 className='text-xl font-bold mb-7'>
-          Registrar nuevo usuario
-        </h1>
+      <h1 className='text-xl font-bold mb-7'>Registrar nuevo usuario</h1>
 
-        <UsuarioForm dataPerfiles={dataPerfiles} />
-      </div>
+      <UsuarioForm dataPerfiles={dataPerfiles} />
     </DasboardLayout>
   )
 }

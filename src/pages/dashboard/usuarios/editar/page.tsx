@@ -23,11 +23,9 @@ export default function DashboardEditarUsuario() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <h1 className='text-xl font-bold mb-7'>Editar usuario</h1>
+      <h1 className='text-xl font-bold mb-7'>Editar usuario</h1>
 
-        <UsuarioForm dataUsuario={dataUsuario} dataPerfiles={dataPerfiles} />
-      </div>
+      <UsuarioForm dataUsuario={dataUsuario} dataPerfiles={dataPerfiles} />
     </DasboardLayout>
   )
 }

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { fetcher } from "@/lib/fetcher"
-import { tipoLugarSchema } from "@/validations/tipoLugar"
+import { ejeTematicoSchema } from "@/validations/ejeTematico"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoaderIcon } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -21,45 +21,40 @@ import { toast } from "sonner"
 import useSWR from "swr"
 import { z } from "zod"
 
-type TipoLugarFormValues = z.infer<typeof tipoLugarSchema>
+type EjeTematicoFormValues = z.infer<typeof ejeTematicoSchema>
 
-export default function EditarTipoLugarForm() {
+export default function EditarEjeTematicoForm() {
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(false)
 
-  const { data, isValidating } = useSWR(`/tipo-lugares/${id}`, fetcher)
+  const { data, isValidating } = useSWR(`/eje-tematicos/${id}`, fetcher)
 
-  const form = useForm<TipoLugarFormValues>({
-    resolver: zodResolver(tipoLugarSchema),
+  const form = useForm<EjeTematicoFormValues>({
+    resolver: zodResolver(ejeTematicoSchema),
     mode: "onChange",
   })
 
-  // Actualizar el formulario con los datos obtenidos de SWR
   useEffect(() => {
     if (data) {
       form.reset({
-        tipoLugar: data.tipoLugar,
+        ejeTematico: data.ejeTematico,
       })
     }
   }, [data, form])
 
-  async function onSubmit(data: TipoLugarFormValues) {
+  async function onSubmit(data: EjeTematicoFormValues) {
     setIsLoading(true)
 
     try {
-      const tipoLugarData = {
-        tipoLugar: data.tipoLugar,
-      }
-
-      // Usar PUT o PATCH para actualizar el tipo de lugar
-      await axiosInstance.patch(`/tipo-lugares/${id}`, tipoLugarData)
-
-      toast.success("Tipo de lugar actualizado con éxito")
-      navigate("/dashboard/tipo-lugares")
+      await axiosInstance.patch(`/eje-tematicos/${id}`, {
+        ejeTematico: data.ejeTematico,
+      })
+      toast.success("Eje tematico actualizado con éxito")
+      navigate("/dashboard/eje-tematicos")
     } catch {
       setIsLoading(false)
-      toast.error("Algo salió mal al actualizar el tipo de lugar")
+      toast.error("Algo salió mal al actualizar el eje tematico")
     } finally {
       setIsLoading(false)
     }
@@ -74,10 +69,10 @@ export default function EditarTipoLugarForm() {
       <form className='grid gap-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name='tipoLugar'
+          name='ejeTematico'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nombre del tipo de lugar</FormLabel>
+              <FormLabel>Nombre del eje tematico</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -91,7 +86,7 @@ export default function EditarTipoLugarForm() {
           disabled={isLoading || !form.formState.isValid}
         >
           {isLoading && <LoaderIcon className='mr-2 h-4 w-4 animate-spin' />}
-          Actualizar tipo de lugar
+          Actualizar eje tematico
         </Button>
       </form>
     </Form>
