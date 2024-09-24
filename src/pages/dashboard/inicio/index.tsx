@@ -1,17 +1,15 @@
-import axiosInstance from "@/axiosInstance"
 import FiltroDistritoLocal from "@/components/filtros/filtroDistrito"
 import FiltroMunicipio from "@/components/filtros/filtroMunicipio"
 import FiltroPromotor from "@/components/filtros/filtroPromotor"
 import Loader from "@/components/loader"
 import MainMap from "@/components/mainMap"
 import DasboardLayout from "@/layouts/dashboard"
+import { fetcher } from "@/lib/fetcher"
 import { cn } from "@/lib/utils"
 import { Evento } from "@/types/evento.interface"
 import { Promotor } from "@/types/promotor.interface"
 import { useMemo, useState } from "react"
 import useSWR from "swr"
-
-const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data)
 
 export default function DashboardIndex() {
   const { data: eventos, error } = useSWR<Evento[]>("/eventos", fetcher)
@@ -103,80 +101,74 @@ export default function DashboardIndex() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <div className='flex flex-col md:flex-row md:items-center justify-between'>
-          <h2 className='text-xl font-bold mb-8'>Mapa de eventos</h2>
+      <div className='flex flex-col md:flex-row md:items-center justify-between'>
+        <h2 className='text-xl font-bold mb-8'>Mapa de eventos</h2>
 
-          <div className='p-4 bg-neutral-100 rounded-xl'>
-            <p className='text-center text-sm font-mono mb-2'>
-              Tipo de division de mapa
-            </p>
-            <div className='flex space-x-2'>
-              <button
-                className={cn(
-                  "px-4 py-2 rounded-md",
-                  mapView === "secciones" && "bg-blue-500 text-white",
-                  mapView !== "secciones" && "bg-neutral-200 text-blue-500"
-                )}
-                onClick={() => setMapView("secciones")}
-              >
-                Distritos
-              </button>
-              <button
-                className={cn(
-                  "px-4 py-2 rounded-md",
-                  mapView === "municipios" && "bg-blue-500 text-white",
-                  mapView !== "municipios" && "bg-neutral-200 text-blue-500"
-                )}
-                onClick={() => setMapView("municipios")}
-              >
-                Municipios
-              </button>
-            </div>
+        <div className='p-4 bg-neutral-100 rounded-xl'>
+          <p className='text-center text-sm font-mono mb-2'>
+            Tipo de division de mapa
+          </p>
+          <div className='flex space-x-2'>
+            <button
+              className={cn(
+                "px-4 py-2 rounded-md",
+                mapView === "secciones" && "bg-blue-500 text-white",
+                mapView !== "secciones" && "bg-neutral-200 text-blue-500"
+              )}
+              onClick={() => setMapView("secciones")}
+            >
+              Distritos
+            </button>
+            <button
+              className={cn(
+                "px-4 py-2 rounded-md",
+                mapView === "municipios" && "bg-blue-500 text-white",
+                mapView !== "municipios" && "bg-neutral-200 text-blue-500"
+              )}
+              onClick={() => setMapView("municipios")}
+            >
+              Municipios
+            </button>
           </div>
         </div>
+      </div>
 
-        <FiltroPromotor
-          promotores={promotores}
-          promotorSeleccionado={promotorSeleccionado}
-          onPromotorChange={setPromotorSeleccionado}
+      <FiltroPromotor
+        promotores={promotores}
+        promotorSeleccionado={promotorSeleccionado}
+        onPromotorChange={setPromotorSeleccionado}
+      />
+
+      <div className='grid md:grid-cols-2 gap-5'>
+        <FiltroMunicipio
+          municipios={municipios}
+          municipioSeleccionado={municipioSeleccionado}
+          onMunicipioChange={setMunicipioSeleccionado}
         />
 
-        <div className='grid md:grid-cols-2 gap-5'>
-          <FiltroMunicipio
-            municipios={municipios}
-            municipioSeleccionado={municipioSeleccionado}
-            onMunicipioChange={setMunicipioSeleccionado}
-          />
+        <FiltroDistritoLocal
+          distritosLocales={distritosLocales}
+          distritoLocalSeleccionado={distritoLocalSeleccionado}
+          onDistritoLocalChange={setDistritoLocalSeleccionado}
+        />
+      </div>
 
-          <FiltroDistritoLocal
-            distritosLocales={distritosLocales}
-            distritoLocalSeleccionado={distritoLocalSeleccionado}
-            onDistritoLocalChange={setDistritoLocalSeleccionado}
+      {mapView === "secciones" ? (
+        <div className='h-[530px] mb-10'>
+          <p className='mb-3 font-semibold'>Mapa con division por distritos</p>
+          <MainMap zoom={9} center={[lng, lat]} markers={markers} />
+        </div>
+      ) : (
+        <div className='h-[530px] mb-10'>
+          <p className='mb-3 font-semibold'>Mapa con division por municipios</p>
+          <MainMap
+            style='mapbox://styles/cristian51310/cm0v4tehl008301nt8ayk0zgi'
+            zoom={9}
+            center={[lng, lat]}
+            markers={markers}
           />
         </div>
-
-        {mapView === "secciones" ? (
-          <div className='h-[530px] mb-10'>
-            <p className='mb-3 font-semibold'>
-              Mapa con division por distritos
-            </p>
-            <MainMap zoom={9} center={[lng, lat]} markers={markers} />
-          </div>
-        ) : (
-          <div className='h-[530px] mb-10'>
-            <p className='mb-3 font-semibold'>
-              Mapa con division por municipios
-            </p>
-            <MainMap
-              style='mapbox://styles/cristian51310/cm0v4tehl008301nt8ayk0zgi'
-              zoom={9}
-              center={[lng, lat]}
-              markers={markers}
-            />
-          </div>
-        )}
-      </div>
+      )}
     </DasboardLayout>
   )
 }

@@ -39,15 +39,18 @@ export default function MobileMenu() {
           <SheetContent>
             <div className='space-y-4'>
               {Object.entries(groupedLinks).map(([categoria, links]) => (
-                <Accordion type='single' collapsible className='w-full'>
+                <Accordion
+                  key={categoria}
+                  type='single'
+                  collapsible
+                  className='w-full'
+                >
                   <AccordionItem
                     className='bg-neutral-200 rounded-xl p-2 py-0'
                     value={categoria}
                   >
                     <AccordionTrigger>
-                      <h3 className='px-4 font-semibold'>
-                        {categoria}
-                      </h3>
+                      <h3 className='px-4 font-semibold'>{categoria}</h3>
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className='grid gap-2'>

@@ -4,6 +4,7 @@ import {
   IoBriefcaseOutline,
   IoBusinessOutline,
   IoCalendarOutline,
+  IoDocumentTextOutline,
   IoHomeOutline,
   IoIdCardOutline,
   IoMegaphoneOutline,
@@ -89,6 +90,13 @@ export const links: Link[] = [
     categoria: Categorias.ADMINSTRACION,
     icon: IoOptionsOutline,
     label: "Opciones de menú",
+    perfil: "Administrador",
+  },
+  {
+    href: "/dashboard/eventos/excel",
+    categoria: Categorias.ADMINSTRACION,
+    icon: IoDocumentTextOutline,
+    label: "Carga masiva",
     perfil: "Administrador",
   },
   {

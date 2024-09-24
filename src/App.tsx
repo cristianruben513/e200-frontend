@@ -26,14 +26,15 @@ import DashboardEditarCargo from "./pages/dashboard/cargos/edit/page"
 import DashboardNuevoCargo from "./pages/dashboard/cargos/nuevo/page"
 import DashboardCargos from "./pages/dashboard/cargos/page"
 import DashboardEditarDirectorio from "./pages/dashboard/directorio/editar/page"
+import DashboardEditarEjeTematico from "./pages/dashboard/eje-tematicos/edit/page"
+import DashboardNuevoEjeTematico from "./pages/dashboard/eje-tematicos/nuevo/page"
+import DashboardEjeTematicos from "./pages/dashboard/eje-tematicos/page"
 import DashboardMenuOptions from "./pages/dashboard/menu/page"
 import DashboardEditarTipoEvento from "./pages/dashboard/tipo-eventos/edit/page"
 import DashboardNuevoTipoEvento from "./pages/dashboard/tipo-eventos/nuevo/page"
 import DashboardTipoEventos from "./pages/dashboard/tipo-eventos/page"
 import DashboardEditarUsuario from "./pages/dashboard/usuarios/editar/page"
-import DashboardEjeTematicos from "./pages/dashboard/eje-tematicos/page"
-import DashboardNuevoEjeTematico from "./pages/dashboard/eje-tematicos/nuevo/page"
-import DashboardEditarEjeTematico from "./pages/dashboard/eje-tematicos/edit/page"
+import DashboardExcel from "./pages/dashboard/excel/page"
 
 function App() {
   const all = [Perfil.Administrador, Perfil.Staff, Perfil.Supervisor]
@@ -277,6 +278,16 @@ function App() {
             <ProtectedRoute
               allowedRoles={[Perfil.Administrador]}
               element={<DashboardMenuOptions />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/eventos/excel'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardExcel />}
             />
           }
         />

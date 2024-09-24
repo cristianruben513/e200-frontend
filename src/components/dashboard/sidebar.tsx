@@ -30,7 +30,12 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
 
       <div className='space-y-6'>
         {Object.entries(groupedLinks).map(([categoria, links]) => (
-          <Accordion type='single' collapsible className='w-full'>
+          <Accordion
+            key={categoria}
+            type='single'
+            collapsible
+            className='w-full'
+          >
             <AccordionItem
               className='bg-neutral-200 rounded-xl p-3 py-1'
               value={categoria}
@@ -58,11 +63,4 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
       </div>
     </div>
   )
-}
-
-{
-  /* <div className='bg-neutral-200 rounded-xl p-3' key={categoria}>
-           
-            
-</div> */
 }
