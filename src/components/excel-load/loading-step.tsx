@@ -11,7 +11,7 @@ export default function LoadingStep() {
             "border-neutral-400/80"
           )}
         >
-          <Loader2Icon className='size-4' />
+          <Loader2Icon className='size-4 animate-spin' />
         </div>
       </section>
     </div>

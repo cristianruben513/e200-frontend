@@ -27,65 +27,65 @@ export default function DashboardEventoDetail() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
-          <h1 className='text-xl font-bold'>{eventoData?.evento}</h1>
-        </div>
-
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-          <Card title='Tipo Evento'>{eventoData?.tipoEvento.tipoEvento}</Card>
-          <Card title='Organizador'>{eventoData?.organizador.organizador}</Card>
-        </div>
-
-        <div className='grid md:grid-cols-4 gap-4 mt-4'>
-          <div className='p-2 px-4 rounded-xl bg-neutral-100 grid gap-1 md:col-span-2'>
-            <span className='font-bold text-lg'>Promotor</span>
-            <span>{eventoData?.promotor.nombre}</span>
-          </div>
-
-          <Card title='Cargo'>{eventoData?.promotor.cargo.cargo}</Card>
-          <Card title='Impacto'>{eventoData?.impacto.impacto}</Card>
-        </div>
-
-        <div className='grid md:grid-cols-2 gap-5 mt-5'>
-          <section className='aspect-square h-full w-full bg-green-50 rounded-xl'>
-            <MainMap
-              center={[longitud, latitud]}
-              markers={[
-                {
-                  latitud,
-                  longitud,
-                  marcador: eventoData?.promotor.marcador,
-                  nombreEvento: eventoData?.evento,
-                  fechaInicio: eventoData?.fechaInicio,
-                },
-              ]}
-              zoom={14}
-            />
-          </section>
-
-          <section className='grid grid-cols-2 gap-4'>
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className='aspect-square rounded-xl shadow-lg'>
-                {fotosData[index] ? (
-                  <img
-                    className='w-full h-full object-cover rounded-xl'
-                    src={fotosData[index].url}
-                    alt={`Foto ${index + 1}`}
-                  />
-                ) : (
-                  <div className='w-full h-full bg-gray-300 rounded-xl' />
-                )}
-              </div>
-            ))}
-          </section>
-        </div>
-
-        <div className='grid md:grid-cols-2 gap-4 mt-4'>
-          <Card title='Fecha y Hora de inicio'>{eventoData?.horaInicio}</Card>
-          <Card title='Fecha y Hora de termino'>{eventoData?.horaFin}</Card>
-        </div>
+     
+      <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
+        <h1 className='text-xl font-bold'>{eventoData?.evento}</h1>
       </div>
+
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+        <Card title='Tipo Evento'>{eventoData?.tipoEvento.tipoEvento}</Card>
+        <Card title='Organizador'>{eventoData?.organizador.organizador}</Card>
+      </div>
+
+      <div className='grid md:grid-cols-4 gap-4 mt-4'>
+        <div className='p-2 px-4 rounded-xl bg-neutral-100 grid gap-1 md:col-span-2'>
+          <span className='font-bold text-lg'>Promotor</span>
+          <span>{eventoData?.promotor.nombre}</span>
+        </div>
+
+        <Card title='Cargo'>{eventoData?.promotor.cargo.cargo}</Card>
+        <Card title='Impacto'>{eventoData?.impacto.impacto}</Card>
+      </div>
+
+      <div className='grid md:grid-cols-2 gap-5 mt-5'>
+        <section className='aspect-square h-full w-full bg-green-50 rounded-xl'>
+          <MainMap
+            center={[longitud, latitud]}
+            markers={[
+              {
+                latitud,
+                longitud,
+                marcador: eventoData?.promotor.marcador,
+                nombreEvento: eventoData?.evento,
+                fechaInicio: eventoData?.fechaInicio,
+              },
+            ]}
+            zoom={14}
+          />
+        </section>
+
+        <section className='grid grid-cols-2 gap-4'>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className='aspect-square rounded-xl shadow-lg'>
+              {fotosData[index] ? (
+                <img
+                  className='w-full h-full object-cover rounded-xl'
+                  src={fotosData[index].url}
+                  alt={`Foto ${index + 1}`}
+                />
+              ) : (
+                <div className='w-full h-full bg-gray-300 rounded-xl' />
+              )}
+            </div>
+          ))}
+        </section>
+      </div>
+
+      <div className='grid md:grid-cols-2 gap-4 mt-4'>
+        <Card title='Fecha y Hora de inicio'>{eventoData?.horaInicio}</Card>
+        <Card title='Fecha y Hora de termino'>{eventoData?.horaFin}</Card>
+      </div>
+
     </DasboardLayout>
   )
 }

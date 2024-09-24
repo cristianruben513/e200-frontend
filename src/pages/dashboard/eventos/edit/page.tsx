@@ -40,20 +40,19 @@ export default function DashboardEditarEvento() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <h1 className='text-xl font-bold mb-7'>Actualizar evento</h1>
-        <EditarEventForm
-          dataTipoLugares={dataTipoLugar}
-          dataTipoEventos={dataTipoEventos}
-          dataOrganizadores={dataOrganizadores}
-          dataEjesTematicos={dataEjesTematicos}
-          dataImpactos={dataImpactos}
-          dataMunicipios={dataMunicipios}
-          dataSecciones={dataSecciones}
-          dataPromotores={dataPromotores}
-          dataEvento={dataEvento}
-        />
-      </div>
+      <h1 className='text-xl font-bold mb-7'>Actualizar evento</h1>
+      
+      <EditarEventForm
+        dataTipoLugares={dataTipoLugar}
+        dataTipoEventos={dataTipoEventos}
+        dataOrganizadores={dataOrganizadores}
+        dataEjesTematicos={dataEjesTematicos}
+        dataImpactos={dataImpactos}
+        dataMunicipios={dataMunicipios}
+        dataSecciones={dataSecciones}
+        dataPromotores={dataPromotores}
+        dataEvento={dataEvento}
+      />
     </DasboardLayout>
   )
 }

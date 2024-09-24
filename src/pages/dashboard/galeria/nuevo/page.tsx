@@ -18,11 +18,9 @@ export default function DashboardNuevaFoto() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <h1 className='text-xl font-bold mb-7'>Subir foto</h1>
+      <h1 className='text-xl font-bold mb-7'>Subir foto</h1>
 
-        <NuevaFotoForm dataEventos={eventosData} />
-      </div>
+      <NuevaFotoForm dataEventos={eventosData} />
     </DasboardLayout>
   )
 }

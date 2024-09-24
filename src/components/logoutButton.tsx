@@ -27,7 +27,7 @@ export default function LogoutButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className='flex' variant='destructive'>
+        <Button className='flex' variant='destructive' size="sm">
           <span className='block'>Cerrar Sesion</span>
           <IoLogOutOutline className='text-xl md:ml-2' />
         </Button>

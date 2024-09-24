@@ -25,10 +25,8 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const groupedLinks = groupLinksByCategory(filteredLinks)
 
   return (
-    <div className={cn("min-h-[calc(100vh-80px)] space-y-4 p-8", className)}>
-      <h2 className='mb-6 text-xl font-bold'>Dashboard</h2>
-
-      <div className='space-y-6'>
+    <div className={cn("min-h-[calc(100vh-80px)] p-6", className)}>
+      <div className='space-y-4'>
         {Object.entries(groupedLinks).map(([categoria, links]) => (
           <Accordion
             key={categoria}
@@ -37,11 +35,11 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
             className='w-full'
           >
             <AccordionItem
-              className='bg-neutral-200 rounded-xl p-3 py-1'
+              className='bg-neutral-200 rounded-xl p-4 py-0'
               value={categoria}
             >
               <AccordionTrigger>
-                <h3 className='px-4 text-md font-semibold'>{categoria}</h3>
+                <h3 className='text-sm font-semibold'>{categoria}</h3>
               </AccordionTrigger>
               <AccordionContent>
                 <div className='grid gap-2'>

@@ -104,14 +104,14 @@ export default function DashboardIndex() {
       <div className='flex flex-col md:flex-row md:items-center justify-between'>
         <h2 className='text-xl font-bold mb-8'>Mapa de eventos</h2>
 
-        <div className='p-4 bg-neutral-100 rounded-xl'>
+        <div className='p-3 bg-neutral-100 rounded-xl mb-3'>
           <p className='text-center text-sm font-mono mb-2'>
             Tipo de division de mapa
           </p>
-          <div className='flex space-x-2'>
+          <div className='flex space-x-2 mt-2 text-sm'>
             <button
               className={cn(
-                "px-4 py-2 rounded-md",
+                "px-4 py-1 rounded-md w-full",
                 mapView === "secciones" && "bg-blue-500 text-white",
                 mapView !== "secciones" && "bg-neutral-200 text-blue-500"
               )}
@@ -121,7 +121,7 @@ export default function DashboardIndex() {
             </button>
             <button
               className={cn(
-                "px-4 py-2 rounded-md",
+                "px-4 py-1 rounded-md w-full",
                 mapView === "municipios" && "bg-blue-500 text-white",
                 mapView !== "municipios" && "bg-neutral-200 text-blue-500"
               )}

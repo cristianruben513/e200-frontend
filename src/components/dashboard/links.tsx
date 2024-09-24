@@ -4,6 +4,7 @@ import {
   IoBriefcaseOutline,
   IoBusinessOutline,
   IoCalendarOutline,
+  IoCameraOutline,
   IoDocumentTextOutline,
   IoHomeOutline,
   IoIdCardOutline,
@@ -41,6 +42,13 @@ export const links: Link[] = [
     categoria: Categorias.AGENDA,
     icon: IoCalendarOutline,
     label: "Eventos",
+    perfil: "Staff",
+  },
+  {
+    href: "/dashboard/nueva-foto",
+    categoria: Categorias.AGENDA,
+    icon: IoCameraOutline,
+    label: "Agregar foto",
     perfil: "Staff",
   },
   {

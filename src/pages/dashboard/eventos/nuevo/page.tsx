@@ -34,20 +34,18 @@ export default function DashboardNuevoEvento() {
 
   return (
     <DasboardLayout>
-      <div className='md:mx-20'>
-        <h1 className='text-xl font-bold mb-7'>Registrar evento</h1>
+      <h1 className='text-xl font-bold mb-7'>Registrar evento</h1>
 
-        <NewEventForm
-          dataTipoLugares={tipoLugar}
-          dataTipoEventos={tipoEventos}
-          dataOrganizadores={organizadores}
-          dataEjesTematicos={ejesTematicos}
-          dataImpactos={impactos}
-          dataMunicipios={municipios}
-          dataSecciones={secciones}
-          dataPromotores={promotores}
-        />
-      </div>
+      <NewEventForm
+        dataTipoLugares={tipoLugar}
+        dataTipoEventos={tipoEventos}
+        dataOrganizadores={organizadores}
+        dataEjesTematicos={ejesTematicos}
+        dataImpactos={impactos}
+        dataMunicipios={municipios}
+        dataSecciones={secciones}
+        dataPromotores={promotores}
+      />
     </DasboardLayout>
   )
 }
