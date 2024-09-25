@@ -25,16 +25,24 @@ import { Perfil } from "./enums/perfil.enum"
 import DashboardEditarCargo from "./pages/dashboard/cargos/edit/page"
 import DashboardNuevoCargo from "./pages/dashboard/cargos/nuevo/page"
 import DashboardCargos from "./pages/dashboard/cargos/page"
+import DashboardEditarContacto from "./pages/dashboard/contactos/editar/page"
+import DashboardNuevoContacto from "./pages/dashboard/contactos/nuevo/page"
+import DashboardContactos from "./pages/dashboard/contactos/page"
 import DashboardEditarDirectorio from "./pages/dashboard/directorio/editar/page"
 import DashboardEditarEjeTematico from "./pages/dashboard/eje-tematicos/edit/page"
 import DashboardNuevoEjeTematico from "./pages/dashboard/eje-tematicos/nuevo/page"
 import DashboardEjeTematicos from "./pages/dashboard/eje-tematicos/page"
+import DashboardExcel from "./pages/dashboard/excel/page"
+import InvitacionDetail from "./pages/dashboard/invitaciones/detail/page"
+import DashboardInvitaciones from "./pages/dashboard/invitaciones/page"
 import DashboardMenuOptions from "./pages/dashboard/menu/page"
+import DashboardEditarPrograma from "./pages/dashboard/programas/editar/page"
+import DashboardNuevoPrograma from "./pages/dashboard/programas/nuevo/page"
+import DashboardProgramas from "./pages/dashboard/programas/page"
 import DashboardEditarTipoEvento from "./pages/dashboard/tipo-eventos/edit/page"
 import DashboardNuevoTipoEvento from "./pages/dashboard/tipo-eventos/nuevo/page"
 import DashboardTipoEventos from "./pages/dashboard/tipo-eventos/page"
 import DashboardEditarUsuario from "./pages/dashboard/usuarios/editar/page"
-import DashboardExcel from "./pages/dashboard/excel/page"
 
 function App() {
   const all = [Perfil.Administrador, Perfil.Staff, Perfil.Supervisor]
@@ -60,6 +68,18 @@ function App() {
             <ProtectedRoute allowedRoles={all} element={<DashboardIndex />} />
           }
         />
+        <Route
+          path='/dashboard/invitaciones'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardInvitaciones />}
+            />
+          }
+        />
+        
+        <Route path='/invitacion/:id' element={<InvitacionDetail />} />
+
         <Route
           path='/dashboard/eventos'
           element={
@@ -120,6 +140,35 @@ function App() {
             />
           }
         />
+
+        <Route
+          path='/dashboard/contactos'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardContactos />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/nuevo-contacto'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardNuevoContacto />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-contacto/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardEditarContacto />}
+            />
+          }
+        />
+
         <Route
           path='/dashboard/tipo-lugares'
           element={
@@ -144,6 +193,34 @@ function App() {
             <ProtectedRoute
               allowedRoles={all}
               element={<DashboardEditarTipoLugar />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/programas'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardProgramas />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/nuevo-programa'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoPrograma />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-programa/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEditarPrograma />}
             />
           }
         />

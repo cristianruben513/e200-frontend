@@ -1,14 +1,12 @@
 import { DataTable } from "@/components/tables/dataTable"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Perfil } from "@/types/perfil.interface"
-import { Usuario } from "@/types/usuario.interface"
+import { Promotor } from "@/types/promotor.interface"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, EditIcon } from "lucide-react"
 import { Link } from "react-router-dom"
-import { toast } from "sonner"
 
-const columns: ColumnDef<Usuario>[] = [
+const columns: ColumnDef<Promotor>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -23,33 +21,17 @@ const columns: ColumnDef<Usuario>[] = [
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "username",
+    accessorKey: "nombre",
     header: ({ column }) => (
       <Button
         variant='ghost'
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Username
+        Nombre
         <ArrowUpDown className='ml-2 size-4' />
       </Button>
     ),
-    cell: ({ row }) => <div>{row.getValue("username")}</div>,
-  },
-  {
-    accessorKey: "perfil",
-    header: ({ column }) => (
-      <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Perfil
-        <ArrowUpDown className='ml-2 size-4' />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const perfil: Perfil = row.getValue("perfil")
-      return <div>{perfil.perfil}</div>
-    },
+    cell: ({ row }) => <div>{row.getValue("nombre")}</div>,
   },
   {
     id: "actions",
@@ -60,9 +42,8 @@ const columns: ColumnDef<Usuario>[] = [
       return (
         <div className='flex justify-center items-center gap-4'>
           <Link
+            to={`/dashboard/editar-promotor/${id}`}
             className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
-            to={`/dashboard/editar-usuario/${id}`}
-            onClick={() => toast.success("Actualizar")}
           >
             <EditIcon className='size-4' />
           </Link>
@@ -72,10 +53,10 @@ const columns: ColumnDef<Usuario>[] = [
   },
 ]
 
-export default function UsuariosTable({
-  dataUsuarios,
+export default function ContactosTable({
+  contactos,
 }: {
-  dataUsuarios: Usuario[]
+  contactos: Promotor[]
 }) {
-  return <DataTable data={dataUsuarios} columns={columns} />
+  return <DataTable data={contactos} columns={columns} />
 }

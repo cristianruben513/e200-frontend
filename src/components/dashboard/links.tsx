@@ -1,6 +1,7 @@
 import {
   IoAddCircleOutline,
   IoAt,
+  IoBookOutline,
   IoBriefcaseOutline,
   IoBusinessOutline,
   IoCalendarOutline,
@@ -11,6 +12,9 @@ import {
   IoMegaphoneOutline,
   IoOptionsOutline,
   IoPeopleCircleOutline,
+  IoPeopleOutline,
+  IoReaderOutline,
+  IoSchoolOutline,
 } from "react-icons/io5"
 
 import { IconType } from "react-icons/lib"
@@ -19,6 +23,7 @@ enum Categorias {
   ADMINSTRACION = "Administrador",
   AGENDA = "Agenda",
   ENCUESTAS = "Encuestas",
+  INVITACIONES = "Invitaciones"
 }
 
 export interface Link {
@@ -101,6 +106,13 @@ export const links: Link[] = [
     perfil: "Administrador",
   },
   {
+    href: "/dashboard/programas",
+    categoria: Categorias.ADMINSTRACION,
+    icon: IoSchoolOutline,
+    label: "Programas sociales",
+    perfil: "Administrador",
+  },
+  {
     href: "/dashboard/eventos/excel",
     categoria: Categorias.ADMINSTRACION,
     icon: IoDocumentTextOutline,
@@ -112,6 +124,27 @@ export const links: Link[] = [
     categoria: Categorias.ENCUESTAS,
     icon: IoAddCircleOutline,
     label: "Nueva encuesta",
+    perfil: "Administrador",
+  },
+  {
+    href: "/dashboard/contactos",
+    categoria: Categorias.INVITACIONES,
+    icon: IoBookOutline,
+    label: "Contactos",
+    perfil: "Administrador",
+  },
+  {
+    href: "/dashboard/grupos",
+    categoria: Categorias.INVITACIONES,
+    icon: IoPeopleOutline,
+    label: "Grupos",
+    perfil: "Administrador",
+  },
+  {
+    href: "/dashboard/invitaciones",
+    categoria: Categorias.INVITACIONES,
+    icon: IoReaderOutline,
+    label: "Invitaciones",
     perfil: "Administrador",
   },
 ]

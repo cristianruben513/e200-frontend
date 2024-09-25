@@ -25,7 +25,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const groupedLinks = groupLinksByCategory(filteredLinks)
 
   return (
-    <div className={cn("min-h-[calc(100vh-80px)] p-6", className)}>
+    <div className={cn("min-h-[calc(100vh-60px)] p-6", className)}>
       <div className='space-y-4'>
         {Object.entries(groupedLinks).map(([categoria, links]) => (
           <Accordion

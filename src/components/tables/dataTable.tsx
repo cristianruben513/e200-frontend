@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
@@ -19,82 +19,21 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, EditIcon, EyeIcon } from "lucide-react"
 import { useState } from "react"
 
-import { TablePagination } from "@/components/tables/pagination"
-import { cn } from "@/lib/utils"
-import { Evento } from "@/types/evento.interface"
-import { Link } from "react-router-dom"
+interface DataTableProps<TData> {
+  data: TData[]
+  columns: ColumnDef<TData>[]
+}
 
-const columns: ColumnDef<Evento>[] = [
-  {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Id
-        <ArrowUpDown className='ml-2 size-4' />
-      </Button>
-    ),
-    cell: ({ row }) => <div>{row.getValue("id")}</div>,
-  },
-  {
-    accessorKey: "evento",
-    header: () => <div>Evento</div>,
-    cell: ({ row }) => <div>{row.getValue("evento")}</div>,
-  },
-  {
-    accessorKey: "fechaInicio",
-    header: ({ column }) => (
-      <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Fecha de inicio
-        <ArrowUpDown className='ml-2 size-4' />
-      </Button>
-    ),
-    cell: ({ row }) => <div>{row.getValue("fechaInicio")}</div>,
-  },
-  {
-    id: "actions",
-    header: () => <div className='text-center'>Acciones</div>,
-    cell: ({ row }) => {
-      return (
-        <div className='flex justify-center items-center gap-4'>
-          <Link
-            to={`/dashboard/editar-evento/${row.getValue("id")}`}
-            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
-          >
-            <EditIcon className='size-4' />
-          </Link>
-          <Link
-            to={`/dashboard/eventos/${row.getValue("id")}`}
-            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
-          >
-            <EyeIcon className='size-4' />
-          </Link>
-        </div>
-      )
-    },
-  },
-]
-
-export default function EventosTable({
-  dataEventos,
-}: {
-  dataEventos: Evento[]
-}) {
+export function DataTable<TData>({ data, columns }: DataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
-    data: dataEventos,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -163,7 +102,27 @@ export default function EventosTable({
         </Table>
       </div>
 
-      <TablePagination table={table} />
+      <div className='flex items-center justify-end space-x-2 py-4'>
+        <div className='flex-1 text-sm text-muted-foreground'>
+          {table.getRowModel().rows.length} registros
+        </div>
+        <div className='space-x-2'>
+          <Button
+            variant='outline'
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Anterior
+          </Button>
+          <Button
+            variant='outline'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Siguiente
+          </Button>
+        </div>
+      </div>
     </>
   )
 }

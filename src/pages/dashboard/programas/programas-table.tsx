@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
@@ -19,15 +19,17 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, EditIcon, EyeIcon } from "lucide-react"
+import { ArrowUpDown, EditIcon } from "lucide-react"
 import { useState } from "react"
 
 import { TablePagination } from "@/components/tables/pagination"
+import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Evento } from "@/types/evento.interface"
+import { Organizacion } from "@/types/organizacion.interface"
+import { Promotor } from "@/types/promotor.interface"
 import { Link } from "react-router-dom"
 
-const columns: ColumnDef<Evento>[] = [
+const columns: ColumnDef<Promotor>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -42,40 +44,63 @@ const columns: ColumnDef<Evento>[] = [
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "evento",
-    header: () => <div>Evento</div>,
-    cell: ({ row }) => <div>{row.getValue("evento")}</div>,
-  },
-  {
-    accessorKey: "fechaInicio",
+    accessorKey: "nombre",
     header: ({ column }) => (
       <Button
         variant='ghost'
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Fecha de inicio
+        Nombre
         <ArrowUpDown className='ml-2 size-4' />
       </Button>
     ),
-    cell: ({ row }) => <div>{row.getValue("fechaInicio")}</div>,
+    cell: ({ row }) => <div>{row.getValue("nombre")}</div>,
+  },
+  {
+    accessorKey: "afinidad",
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Afinidad
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const afinidad = row.getValue("afinidad")
+      return <div>{afinidad === "O" ? "Opositor" : "Afín"}</div>
+    },
+  },
+  {
+    accessorKey: "organizacion",
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Organización
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const organizacion: Organizacion = row.getValue("organizacion")
+      return <div>{organizacion.organizador}</div>
+    },
   },
   {
     id: "actions",
     header: () => <div className='text-center'>Acciones</div>,
     cell: ({ row }) => {
+      const id = row.getValue("id")
+
       return (
         <div className='flex justify-center items-center gap-4'>
           <Link
-            to={`/dashboard/editar-evento/${row.getValue("id")}`}
-            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
+            to={`/dashboard/editar-promotor/${id}`}
+            className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
           >
             <EditIcon className='size-4' />
-          </Link>
-          <Link
-            to={`/dashboard/eventos/${row.getValue("id")}`}
-            className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
-          >
-            <EyeIcon className='size-4' />
           </Link>
         </div>
       )
@@ -83,10 +108,10 @@ const columns: ColumnDef<Evento>[] = [
   },
 ]
 
-export default function EventosTable({
-  dataEventos,
+export default function DirectorioTable({
+  dataDirectorio,
 }: {
-  dataEventos: Evento[]
+  dataDirectorio: Promotor[]
 }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -94,7 +119,7 @@ export default function EventosTable({
   const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
-    data: dataEventos,
+    data: dataDirectorio,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
