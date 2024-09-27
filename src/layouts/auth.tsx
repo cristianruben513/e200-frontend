@@ -17,14 +17,14 @@ export default function AuthLayout({
         className={cn(
           "lg:col-span-3",
           "lg:h-[100dvh] h-[65dvh]",
-          "flex items-center justify-center"
+          "flex items-center justify-center p-2"
         )}
       >
         <div className='fixed inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#e6e6e6_1px,transparent_1px),linear-gradient(to_bottom,#e6e6e6_1px,transparent_1px)] bg-[size:6rem_4rem]'>
           <div className='absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#6fb1d8,transparent)]'></div>
         </div>
 
-        {children}
+        <div className="p-3">{children}</div>
       </div>
     </div>
   )

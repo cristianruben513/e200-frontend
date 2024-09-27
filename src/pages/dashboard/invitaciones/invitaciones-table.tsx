@@ -45,8 +45,8 @@ const columns: ColumnDef<Evento>[] = [
     header: () => <div className='text-center'>Acciones</div>,
     cell: ({ row }) => {
       const eventId = row.getValue("id")
-      //const qrValue = "https://e200-frontend.pages.dev/invitacion/" + eventId
-      const qrValue = "http://localhost:5173/invitacion/" + eventId
+      const qrValue = "https://e200-frontend.pages.dev/invitacion/" + eventId
+      //const qrValue = "http://localhost:5173/invitacion/" + eventId
 
       return (
         <div className='flex justify-center'>
