@@ -32,7 +32,7 @@ export default function DashboardTipoEventos() {
         </Link>
       </div>
 
-      {data && <TipoEventosTable dataTipoEventos={data} />}
+      {data && <TipoEventosTable data={data} />}
     </DasboardLayout>
   )
 }

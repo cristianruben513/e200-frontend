@@ -22,6 +22,7 @@ import DashboardNuevoUsuario from "./pages/dashboard/usuarios/nuevo/page"
 import DashboardUsuarios from "./pages/dashboard/usuarios/page"
 
 import { Perfil } from "./enums/perfil.enum"
+import DashboardAsistencia from "./pages/dashboard/asistencia"
 import DashboardEditarCargo from "./pages/dashboard/cargos/edit/page"
 import DashboardNuevoCargo from "./pages/dashboard/cargos/nuevo/page"
 import DashboardCargos from "./pages/dashboard/cargos/page"
@@ -33,6 +34,10 @@ import DashboardEditarEjeTematico from "./pages/dashboard/eje-tematicos/edit/pag
 import DashboardNuevoEjeTematico from "./pages/dashboard/eje-tematicos/nuevo/page"
 import DashboardEjeTematicos from "./pages/dashboard/eje-tematicos/page"
 import DashboardExcel from "./pages/dashboard/excel/page"
+import DashboardEditarGrupo from "./pages/dashboard/grupos/editar/page"
+import DashboardNuevoGrupo from "./pages/dashboard/grupos/nuevo/page"
+import DashboardGrupos from "./pages/dashboard/grupos/page"
+import DashboardGrupoParticipantes from "./pages/dashboard/grupos/participantes/page"
 import InvitacionDetail from "./pages/dashboard/invitaciones/detail/page"
 import DashboardInvitaciones from "./pages/dashboard/invitaciones/page"
 import DashboardMenuOptions from "./pages/dashboard/menu/page"
@@ -77,7 +82,7 @@ function App() {
             />
           }
         />
-        
+
         <Route path='/invitacion/:id' element={<InvitacionDetail />} />
 
         <Route
@@ -193,6 +198,40 @@ function App() {
             <ProtectedRoute
               allowedRoles={all}
               element={<DashboardEditarTipoLugar />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/grupos'
+          element={
+            <ProtectedRoute allowedRoles={all} element={<DashboardGrupos />} />
+          }
+        />
+        <Route
+          path='/dashboard/nuevo-grupo'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardNuevoGrupo />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/editar-grupo/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardEditarGrupo />}
+            />
+          }
+        />
+        <Route
+          path='/dashboard/grupo/participantes/:id'
+          element={
+            <ProtectedRoute
+              allowedRoles={all}
+              element={<DashboardGrupoParticipantes />}
             />
           }
         />
@@ -365,6 +404,16 @@ function App() {
             <ProtectedRoute
               allowedRoles={[Perfil.Administrador]}
               element={<DashboardExcel />}
+            />
+          }
+        />
+
+        <Route
+          path='/dashboard/asistencia'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardAsistencia />}
             />
           }
         />

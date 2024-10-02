@@ -53,6 +53,6 @@ const columns: ColumnDef<Cargo>[] = [
   },
 ]
 
-export default function CargosTable({ dataCargos }: { dataCargos: Cargo[] }) {
-  return <DataTable data={dataCargos} columns={columns} />
+export default function CargosTable({ data }: { data: Cargo[] }) {
+  return <DataTable data={data} columns={columns} />
 }

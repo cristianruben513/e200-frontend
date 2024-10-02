@@ -3,13 +3,12 @@ import { buttonVariants } from "@/components/ui/button"
 import DasboardLayout from "@/layouts/dashboard"
 import { fetcher } from "@/lib/fetcher"
 import { cn } from "@/lib/utils"
-import { Promotor } from "@/types/promotor.interface"
 import { Link } from "react-router-dom"
 import useSWR from "swr"
 import ContactosTable from "./contactos-table"
 
 export default function DashboardContactos() {
-  const { data, isLoading } = useSWR<Promotor[]>("/directorios", fetcher)
+  const { data, isLoading } = useSWR("/contactos", fetcher)
 
   if (isLoading || !data) {
     return (
@@ -24,15 +23,23 @@ export default function DashboardContactos() {
       <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
         <h1 className='text-xl font-bold'>Contactos</h1>
 
-        <Link
-          to='/dashboard/nuevo-directorio'
-          className={cn(buttonVariants(), "w-fit")}
-        >
-          Agregar contacto
-        </Link>
+        <div className="flex flex-row md:items-center gap-2">
+          <Link
+            to='/dashboard/nuevo-contacto'
+            className={cn(buttonVariants(), "w-fit")}
+          >
+            Agregar contacto
+          </Link>
+          <Link
+            to='/dashboard/nuevo-contacto'
+            className={cn(buttonVariants(), "w-fit")}
+          >
+            Subir archivo CSV
+          </Link>
+        </div>
       </div>
 
-      <ContactosTable contactos={data} />
+      <ContactosTable data={data} />
     </DasboardLayout>
   )
 }

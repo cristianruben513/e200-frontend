@@ -86,10 +86,6 @@ const columns: ColumnDef<Promotor>[] = [
   },
 ]
 
-export default function DirectorioTable({
-  dataDirectorio,
-}: {
-  dataDirectorio: Promotor[]
-}) {
-  return <DataTable data={dataDirectorio} columns={columns} />
+export default function DirectorioTable({ data }: { data: Promotor[] }) {
+  return <DataTable data={data} columns={columns} />
 }

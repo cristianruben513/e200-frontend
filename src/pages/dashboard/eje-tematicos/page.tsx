@@ -32,7 +32,7 @@ export default function DashboardEjeTematicos() {
         </Link>
       </div>
 
-      {data && <EjeTematicosTable dataEjeTematicos={data} />}
+      {data && <EjeTematicosTable data={data} />}
     </DasboardLayout>
   )
 }

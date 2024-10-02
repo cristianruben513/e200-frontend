@@ -3,9 +3,9 @@ import FiltroMunicipio from "@/components/filtros/filtroMunicipio"
 import FiltroPromotor from "@/components/filtros/filtroPromotor"
 import Loader from "@/components/loader"
 import MainMap from "@/components/mainMap"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DasboardLayout from "@/layouts/dashboard"
 import { fetcher } from "@/lib/fetcher"
-import { cn } from "@/lib/utils"
 import { Evento } from "@/types/evento.interface"
 import { Promotor } from "@/types/promotor.interface"
 import { useMemo, useState } from "react"
@@ -23,8 +23,6 @@ export default function DashboardIndex() {
   const [distritoLocalSeleccionado, setDistritoLocalSeleccionado] = useState<
     number | null
   >(null)
-
-  const [mapView, setMapView] = useState("secciones")
 
   // Extract unique promotores, municipios, and distritosLocales from the data
   const promotores = useMemo(() => {
@@ -91,6 +89,7 @@ export default function DashboardIndex() {
   const lng = -100.064524
 
   if (error) return <div>Error al cargar los eventos</div>
+
   if (!eventos) {
     return (
       <DasboardLayout>
@@ -103,43 +102,15 @@ export default function DashboardIndex() {
     <DasboardLayout>
       <div className='flex flex-col md:flex-row md:items-center justify-between'>
         <h2 className='text-xl font-bold mb-8'>Mapa de eventos</h2>
-
-        <div className='p-3 bg-neutral-100 rounded-xl mb-3'>
-          <p className='text-center text-sm font-mono mb-2'>
-            Tipo de division de mapa
-          </p>
-          <div className='flex space-x-2 mt-2 text-sm'>
-            <button
-              className={cn(
-                "px-4 py-1 rounded-md w-full",
-                mapView === "secciones" && "bg-blue-500 text-white",
-                mapView !== "secciones" && "bg-neutral-200 text-blue-500"
-              )}
-              onClick={() => setMapView("secciones")}
-            >
-              Distritos
-            </button>
-            <button
-              className={cn(
-                "px-4 py-1 rounded-md w-full",
-                mapView === "municipios" && "bg-blue-500 text-white",
-                mapView !== "municipios" && "bg-neutral-200 text-blue-500"
-              )}
-              onClick={() => setMapView("municipios")}
-            >
-              Municipios
-            </button>
-          </div>
-        </div>
       </div>
 
-      <FiltroPromotor
-        promotores={promotores}
-        promotorSeleccionado={promotorSeleccionado}
-        onPromotorChange={setPromotorSeleccionado}
-      />
+      <div className='grid md:grid-cols-3 gap-3 mb-4'>
+        <FiltroPromotor
+          promotores={promotores}
+          promotorSeleccionado={promotorSeleccionado}
+          onPromotorChange={setPromotorSeleccionado}
+        />
 
-      <div className='grid md:grid-cols-2 gap-5'>
         <FiltroMunicipio
           municipios={municipios}
           municipioSeleccionado={municipioSeleccionado}
@@ -153,22 +124,27 @@ export default function DashboardIndex() {
         />
       </div>
 
-      {mapView === "secciones" ? (
-        <div className='h-[530px] mb-10'>
-          <p className='mb-3 font-semibold'>Mapa con division por distritos</p>
-          <MainMap zoom={9} center={[lng, lat]} markers={markers} />
-        </div>
-      ) : (
-        <div className='h-[530px] mb-10'>
-          <p className='mb-3 font-semibold'>Mapa con division por municipios</p>
-          <MainMap
-            style='mapbox://styles/cristian51310/cm0v4tehl008301nt8ayk0zgi'
-            zoom={9}
-            center={[lng, lat]}
-            markers={markers}
-          />
-        </div>
-      )}
+      <Tabs defaultValue='distritos' className='w-full'>
+        <TabsList>
+          <TabsTrigger value='distritos'>Mapa de Secciones</TabsTrigger>
+          <TabsTrigger value='municipios'>Mapa de Municipios</TabsTrigger>
+        </TabsList>
+        <TabsContent value='distritos'>
+          <div className='h-[530px] mb-10'>
+            <MainMap zoom={9} center={[lng, lat]} markers={markers} />
+          </div>
+        </TabsContent>
+        <TabsContent value='municipios'>
+          <div className='h-[530px] mb-10'>
+            <MainMap
+              style='mapbox://styles/cristian51310/cm0v4tehl008301nt8ayk0zgi'
+              zoom={9}
+              center={[lng, lat]}
+              markers={markers}
+            />
+          </div>
+        </TabsContent>
+      </Tabs>
     </DasboardLayout>
   )
 }

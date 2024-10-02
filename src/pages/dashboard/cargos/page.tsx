@@ -32,7 +32,7 @@ export default function DashboardCargos() {
         </Link>
       </div>
 
-      {data && <CargosTable dataCargos={data} />}
+      {data && <CargosTable data={data} />}
     </DasboardLayout>
   )
 }

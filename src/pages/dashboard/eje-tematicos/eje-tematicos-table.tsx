@@ -53,10 +53,6 @@ const columns: ColumnDef<EjeTematico>[] = [
   },
 ]
 
-export default function TipoEventosTable({
-  dataEjeTematicos,
-}: {
-  dataEjeTematicos: EjeTematico[]
-}) {
-  return <DataTable data={dataEjeTematicos} columns={columns} />
+export default function TipoEventosTable({ data }: { data: EjeTematico[] }) {
+  return <DataTable data={data} columns={columns} />
 }

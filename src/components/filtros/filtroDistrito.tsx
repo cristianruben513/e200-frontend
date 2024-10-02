@@ -10,7 +10,7 @@ export default function FiltroDistritoLocal({
   onDistritoLocalChange,
 }: FiltroDistritoLocalProps) {
   return (
-    <div className='mb-4'>
+    <div>
       <label
         htmlFor='distrito-local-select'
         className='block text-sm font-medium text-gray-700'

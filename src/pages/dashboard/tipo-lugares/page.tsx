@@ -32,7 +32,7 @@ export default function DashboardTipoLugares() {
         </Link>
       </div>
 
-      {data && <TipoLugaresTable dataTipoLugares={data} />}
+      {data && <TipoLugaresTable data={data} />}
     </DasboardLayout>
   )
 }

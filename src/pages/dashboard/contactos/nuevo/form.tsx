@@ -49,7 +49,7 @@ export default function DirectorioForm() {
     setIsLoading(true)
 
     try {
-      const directorioData = {
+      const contactoData = {
         nombre: data.nombre,
         genero: data.genero,
         fechaNacimiento: data.fechaNacimiento,
@@ -58,11 +58,10 @@ export default function DirectorioForm() {
         email: data.email,
         domicilio: data.domicilio,
       }
-
-      await axiosInstance.post("/directorios", directorioData)
+      await axiosInstance.post("/contactos", contactoData)
 
       toast.success("Contacto guardado")
-      navigate("/dashboard/directorio")
+      navigate("/dashboard/contactos")
     } catch {
       setIsLoading(false)
       toast.error("Algo salió mal")
@@ -120,7 +119,7 @@ export default function DirectorioForm() {
             <FormItem>
               <FormLabel>
                 <CalendarIcon className='size-4' />
-                Fecha
+                Fecha de Nacimiento
               </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -146,6 +145,7 @@ export default function DirectorioForm() {
                     mode='single'
                     selected={field.value}
                     onSelect={field.onChange}
+                    defaultMonth={new Date(2006, 1)}
                     initialFocus
                   />
                 </PopoverContent>
@@ -160,7 +160,9 @@ export default function DirectorioForm() {
           name='ine'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ine</FormLabel>
+              <FormLabel>
+                Ine <OptionalBadge />
+              </FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

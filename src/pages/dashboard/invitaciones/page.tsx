@@ -22,7 +22,7 @@ export default function DashboardInvitaciones() {
         <h1 className='text-xl font-bold'>Invitaciones para eventos</h1>
       </div>
 
-      <EventosTable eventos={data} />
+      <EventosTable data={data} />
     </DasboardLayout>
   )
 }

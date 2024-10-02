@@ -31,7 +31,7 @@ export default function DashboardUsuarios() {
         </Link>
       </div>
 
-      <UsuariosTable dataUsuarios={data} />
+      <UsuariosTable data={data} />
     </DasboardLayout>
   )
 }

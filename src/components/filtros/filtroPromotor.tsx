@@ -12,7 +12,7 @@ export default function FiltroPromotor({
   onPromotorChange,
 }: FiltroPromotorProps) {
   return (
-    <div className='mb-4'>
+    <div>
       <label
         htmlFor='promotor-select'
         className='block text-sm font-medium text-gray-700'

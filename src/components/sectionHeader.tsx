@@ -11,7 +11,7 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div className='flex flex-col justify-between md:mt-2 md:mb-8 mb-5'>
-      <div className='flex flex-col md:flex-row items-center justify-between'>
+      <div className='flex flex-col md:flex-row md:items-center justify-between'>
         <h2 className='text-xl font-bold'>{title}</h2>
 
         {children && (

@@ -85,6 +85,6 @@ const columns: ColumnDef<Evento>[] = [
   },
 ]
 
-export default function EventosTable({ eventos }: { eventos: Evento[] }) {
-  return <DataTable data={eventos} columns={columns} />
+export default function EventosTable({ data }: { data: Evento[] }) {
+  return <DataTable data={data} columns={columns} />
 }

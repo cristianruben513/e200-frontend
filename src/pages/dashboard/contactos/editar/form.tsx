@@ -2,6 +2,7 @@
 import axiosInstance from "@/axiosInstance"
 import OptionalBadge from "@/components/optionalBadge"
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Form,
   FormControl,
@@ -12,99 +13,76 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { directorioSchema } from "@/validations/directorio"
+import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { LoaderIcon } from "lucide-react"
+import { format } from "date-fns"
+import { CalendarIcon, LoaderIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { z } from "zod"
 
-import { Cargo } from "@/types/cargo.interface"
-import { Organizador } from "@/types/evento.interface"
-import { Municipio } from "@/types/municipio.interface"
-import { Promotor } from "@/types/promotor.interface"
-import { Seccion } from "@/types/seccion.interface"
+import { Contacto } from "@/types/contacto.interface"
+import { contactoSchema } from "@/validations/contacto"
 
-type DirectorioFormValues = z.infer<typeof directorioSchema>
+type ContactoFormValues = z.infer<typeof contactoSchema>
 
 export default function EditarDirectorioForm({
-  dataOrganizadores,
-  dataMunicipios,
-  dataCargos,
-  dataSecciones,
-  dataPromotor,
+  dataContacto,
 }: {
-  dataOrganizadores: Organizador[]
-  dataMunicipios: Municipio[]
-  dataCargos: Cargo[]
-  dataSecciones: Seccion[]
-  dataPromotor: Promotor
+  dataContacto: Contacto
 }) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<DirectorioFormValues>({
-    resolver: zodResolver(directorioSchema),
+  const form = useForm<ContactoFormValues>({
+    resolver: zodResolver(contactoSchema),
     mode: "onChange",
   })
 
-  // filtrar secciones por municipio
-  const municipio = form.watch("municipio")
-  const secciones = dataSecciones?.filter(
-    (seccion) => seccion.municipio.id === Number(municipio)
-  )
-
   useEffect(() => {
     form.reset({
-      nombre: dataPromotor.nombre,
-      iniciales: dataPromotor.iniciales,
-      genero: dataPromotor.genero,
-      afinidad: dataPromotor.afinidad,
-      celular: dataPromotor.celular ?? "",
-      email: dataPromotor.email ?? "",
-      municipio: dataPromotor.municipio?.id.toString() ?? "",
-      organizacion: dataPromotor.organizacion.id.toString(),
-      cargo: dataPromotor.cargo.id.toString(),
-      seccion: dataPromotor.seccion?.id.toString() ?? "",
-      comentarios: dataPromotor.comentario ?? "",
+      nombre: dataContacto.nombre,
+      genero: dataContacto.genero,
+      fechaNacimiento: new Date(dataContacto.fechaNacimiento),
+      ine: dataContacto.ine || "",
+      celular: dataContacto.celular,
+      email: dataContacto.email || "",
+      domicilio: dataContacto.domicilio,
     })
   }, [])
 
-  async function onSubmit(data: DirectorioFormValues) {
+  async function onSubmit(data: ContactoFormValues) {
     setIsLoading(true)
 
     try {
-      const directorioData = {
+      const contactoData = {
         nombre: data.nombre,
-        iniciales: data.iniciales,
-        afinidad: data.afinidad,
         genero: data.genero,
+        fechaNacimiento: new Date(data.fechaNacimiento)
+          .toISOString()
+          .slice(0, 10),
+        ine: data.ine,
         celular: data.celular,
         email: data.email,
-        municipioId: Number(data.municipio),
-        organizacionId: Number(data.organizacion),
-        cargoId: Number(data.cargo),
-        seccionId: Number(data.seccion),
-        comentarios: data.comentarios,
+        domicilio: data.domicilio,
       }
 
-      console.log(JSON.stringify(directorioData))
+      await axiosInstance.patch(`/contactos/${dataContacto.id}`, contactoData)
 
-      await axiosInstance.patch(
-        `/directorios/${dataPromotor.id}`,
-        directorioData
-      )
-
-      toast.success("Entrada en directorio registrada")
+      toast.success("Contacto actualizado")
       navigate("/dashboard/directorio")
     } catch {
       setIsLoading(false)
@@ -123,20 +101,6 @@ export default function EditarDirectorioForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nombre</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='iniciales'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Iniciales</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -172,24 +136,57 @@ export default function EditarDirectorioForm({
 
         <FormField
           control={form.control}
-          name='afinidad'
+          name='fechaNacimiento'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Afinidad</FormLabel>
+              <FormLabel>
+                <CalendarIcon className='size-4' />
+                Fecha de Nacimiento
+              </FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Elige una fecha</span>
+                      )}
+                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0' align='start'>
+                  <Calendar
+                    mode='single'
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    defaultMonth={new Date(2006, 1)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='ine'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Ine <OptionalBadge />
+              </FormLabel>
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value='A'>Afin</SelectItem>
-                    <SelectItem value='N'>Neutral</SelectItem>
-                    <SelectItem value='O'>Opositor</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -202,10 +199,7 @@ export default function EditarDirectorioForm({
             name='celular'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Celular
-                  <OptionalBadge />
-                </FormLabel>
+                <FormLabel>Celular</FormLabel>
                 <FormControl>
                   <Input maxLength={10} minLength={10} {...field} />
                 </FormControl>
@@ -232,139 +226,14 @@ export default function EditarDirectorioForm({
           />
         </div>
 
-        <div className='grid md:grid-cols-2 gap-5'>
-          <FormField
-            control={form.control}
-            name='municipio'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Municipio
-                  <OptionalBadge />
-                </FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {dataMunicipios?.map((item: Municipio) => (
-                        <SelectItem key={item.id} value={item.id.toString()}>
-                          {item.municipio}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='seccion'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Seccion
-                  <OptionalBadge />
-                </FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {secciones?.map((item: Seccion) => (
-                        <SelectItem key={item.id} value={item.id.toString()}>
-                          {item.seccion}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className='grid md:grid-cols-2 gap-5'>
-          <FormField
-            control={form.control}
-            name='organizacion'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Organizacion</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {dataOrganizadores?.map((item: Organizador) => (
-                        <SelectItem key={item.id} value={item.id.toString()}>
-                          {item.organizador}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='cargo'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Cargo</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {dataCargos?.map((item: Cargo) => (
-                        <SelectItem key={item.id} value={item.id.toString()}>
-                          {item.cargo}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
         <FormField
           control={form.control}
-          name='comentarios'
+          name='domicilio'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                Comentarios
-                <OptionalBadge />
-              </FormLabel>
+              <FormLabel>Domicilio</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -372,11 +241,11 @@ export default function EditarDirectorioForm({
         />
 
         <Button
-          disabled={!form.formState.isValid || isLoading}
+          disabled={isLoading}
           className='my-3'
         >
           {isLoading && <LoaderIcon className='mr-2 h-4 w-4 animate-spin' />}
-          Registar en directorio
+          Editar contacto
         </Button>
       </form>
     </Form>

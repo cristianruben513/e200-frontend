@@ -32,7 +32,7 @@ export default function DashboardProgramas() {
         </Link>
       </div>
 
-      <DirectorioTable dataDirectorio={data} />
+      <DirectorioTable data={data} />
     </DasboardLayout>
   )
 }

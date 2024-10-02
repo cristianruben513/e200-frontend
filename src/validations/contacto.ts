@@ -12,8 +12,6 @@ export const contactoSchema = z.object({
   }),
   ine: z.string().optional(),
   celular: z.string({ message: "El celular es requerido" }),
-  email: z.string().email({ message: "Correo no válido" }).optional(),
-  domicilio: z.string({
-    required_error: "El domicilio es requerida",
-  }),
+  email: z.string().email().optional(),
+  domicilio: z.string().optional(),
 })

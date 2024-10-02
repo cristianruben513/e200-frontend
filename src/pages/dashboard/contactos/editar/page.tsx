@@ -7,21 +7,9 @@ import EditarDirectorioForm from "./form"
 
 export default function DashboardEditarContacto() {
   const { id } = useParams()
+  const { data, isLoading } = useSWR(`/contactos/${id}`, fetcher)
 
-  const { data: dataPromotor } = useSWR(`/directorios/${id}`, fetcher)
-  const { data: dataOrganizadores } = useSWR("/organizaciones", fetcher)
-  const { data: dataMunicipios } = useSWR("/municipios", fetcher)
-  const { data: dataCargos } = useSWR("/cargos", fetcher)
-  const { data: dataSecciones } = useSWR("/secciones", fetcher)
-
-  const isLoading =
-    !dataOrganizadores ||
-    !dataMunicipios ||
-    !dataCargos ||
-    !dataSecciones ||
-    !dataPromotor
-
-  if (isLoading) {
+  if (!data || isLoading) {
     return (
       <DasboardLayout>
         <Loader />
@@ -31,17 +19,9 @@ export default function DashboardEditarContacto() {
 
   return (
     <DasboardLayout>
-      <h1 className='text-xl font-bold mb-7'>
-        Registrar entrada en Directorio
-      </h1>
+      <h1 className='text-xl font-bold mb-7'>Editar contacto</h1>
 
-      <EditarDirectorioForm
-        dataOrganizadores={dataOrganizadores}
-        dataMunicipios={dataMunicipios}
-        dataCargos={dataCargos}
-        dataSecciones={dataSecciones}
-        dataPromotor={dataPromotor}
-      />
+      <EditarDirectorioForm dataContacto={data} />
     </DasboardLayout>
   )
 }

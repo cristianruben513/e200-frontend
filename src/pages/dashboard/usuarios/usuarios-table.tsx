@@ -72,10 +72,6 @@ const columns: ColumnDef<Usuario>[] = [
   },
 ]
 
-export default function UsuariosTable({
-  dataUsuarios,
-}: {
-  dataUsuarios: Usuario[]
-}) {
-  return <DataTable data={dataUsuarios} columns={columns} />
+export default function UsuariosTable({ data }: { data: Usuario[] }) {
+  return <DataTable data={data} columns={columns} />
 }

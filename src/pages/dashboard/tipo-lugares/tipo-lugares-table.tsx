@@ -53,10 +53,6 @@ const columns: ColumnDef<TipoLugar>[] = [
   },
 ]
 
-export default function TipoLugaresTable({
-  dataTipoLugares,
-}: {
-  dataTipoLugares: TipoLugar[]
-}) {
-  return <DataTable data={dataTipoLugares} columns={columns} />
+export default function TipoLugaresTable({ data }: { data: TipoLugar[] }) {
+  return <DataTable data={data} columns={columns} />
 }

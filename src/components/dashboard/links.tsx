@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   IoAddCircleOutline,
   IoAt,
@@ -13,22 +14,19 @@ import {
   IoOptionsOutline,
   IoPeopleCircleOutline,
   IoPeopleOutline,
+  IoQrCodeOutline,
   IoReaderOutline,
   IoSchoolOutline,
 } from "react-icons/io5"
-
 import { IconType } from "react-icons/lib"
-
-enum Categorias {
-  ADMINSTRACION = "Administrador",
-  AGENDA = "Agenda",
-  ENCUESTAS = "Encuestas",
-  INVITACIONES = "Invitaciones"
-}
+import { categorias } from "./categorias"
 
 export interface Link {
   href: string
-  categoria: Categorias
+  categoria: {
+    label: string
+    icon: any
+  }
   icon: IconType
   label: string
   perfil: string
@@ -37,114 +35,121 @@ export interface Link {
 export const links: Link[] = [
   {
     href: "/dashboard",
-    categoria: Categorias.AGENDA,
+    categoria: categorias.AGENDA,
     icon: IoHomeOutline,
     label: "Inicio",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/eventos",
-    categoria: Categorias.AGENDA,
+    categoria: categorias.AGENDA,
     icon: IoCalendarOutline,
     label: "Eventos",
     perfil: "Staff",
   },
   {
     href: "/dashboard/nueva-foto",
-    categoria: Categorias.AGENDA,
+    categoria: categorias.AGENDA,
     icon: IoCameraOutline,
     label: "Agregar foto",
     perfil: "Staff",
   },
   {
     href: "/dashboard/directorio",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoAt,
     label: "Directorio",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/tipo-lugares",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoBusinessOutline,
     label: "Tipos de lugares",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/cargos",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoBriefcaseOutline,
     label: "Cargos",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/eje-tematicos",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoPeopleCircleOutline,
     label: "Ejes Tematicos",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/tipo-eventos",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoMegaphoneOutline,
     label: "Tipos de eventos",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/usuarios",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoIdCardOutline,
     label: "Usuarios",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/menus",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoOptionsOutline,
     label: "Opciones de menú",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/programas",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoSchoolOutline,
     label: "Programas sociales",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/eventos/excel",
-    categoria: Categorias.ADMINSTRACION,
+    categoria: categorias.ADMINSTRACION,
     icon: IoDocumentTextOutline,
     label: "Carga masiva",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/nueva-encuesta",
-    categoria: Categorias.ENCUESTAS,
+    categoria: categorias.ENCUESTAS,
     icon: IoAddCircleOutline,
     label: "Nueva encuesta",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/contactos",
-    categoria: Categorias.INVITACIONES,
+    categoria: categorias.INVITACIONES,
     icon: IoBookOutline,
     label: "Contactos",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/grupos",
-    categoria: Categorias.INVITACIONES,
+    categoria: categorias.INVITACIONES,
     icon: IoPeopleOutline,
     label: "Grupos",
     perfil: "Administrador",
   },
   {
     href: "/dashboard/invitaciones",
-    categoria: Categorias.INVITACIONES,
+    categoria: categorias.INVITACIONES,
     icon: IoReaderOutline,
     label: "Invitaciones",
+    perfil: "Administrador",
+  },
+  {
+    href: "/dashboard/asistencia",
+    categoria: categorias.INVITACIONES,
+    icon: IoQrCodeOutline,
+    label: "Asistencia",
     perfil: "Administrador",
   },
 ]

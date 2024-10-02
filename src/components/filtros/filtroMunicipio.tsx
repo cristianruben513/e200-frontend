@@ -10,7 +10,7 @@ export default function FiltroMunicipio({
   onMunicipioChange,
 }: FiltroMunicipioProps) {
   return (
-    <div className='mb-4'>
+    <div>
       <label
         htmlFor='municipio-select'
         className='block text-sm font-medium text-gray-700'
