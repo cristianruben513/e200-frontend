@@ -9,6 +9,7 @@ import { QRCodeSVG } from "qrcode.react"
 import { useParams } from "react-router-dom"
 import useSWR from "swr"
 import { EventMap } from "./eventMap"
+import { useEffect } from "react"
 
 interface Invitacion {
   token: string
@@ -23,6 +24,12 @@ export default function InvitacionDetail() {
     `/invitaciones/${token}/qr`,
     fetcher
   )
+
+  useEffect(() => {
+    if (data) {
+      document.title = `Invitación para ${data.evento.evento}`
+    }
+  }, [data])
 
   if (isLoading || !data || !token) {
     return (
