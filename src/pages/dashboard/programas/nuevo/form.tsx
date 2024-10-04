@@ -51,6 +51,7 @@ export default function NuevoProgramaForm({
         organizacionId: Number(data.organizacion),
       }
 
+      console.log(programaData)
       await axiosInstance.post("/programas", programaData)
 
       toast.success("Programa registrado")

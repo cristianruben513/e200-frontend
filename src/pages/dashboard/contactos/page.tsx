@@ -31,10 +31,10 @@ export default function DashboardContactos() {
             Agregar contacto
           </Link>
           <Link
-            to='/dashboard/nuevo-contacto'
+            to='/dashboard/contactos/registro-masivo'
             className={cn(buttonVariants(), "w-fit")}
           >
-            Subir archivo CSV
+            Registro masivo
           </Link>
         </div>
       </div>

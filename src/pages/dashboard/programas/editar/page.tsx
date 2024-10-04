@@ -8,7 +8,7 @@ import EditarDirectorioForm from "./form"
 export default function DashboardEditarPrograma() {
   const { id } = useParams()
 
-  const { data: dataPrograma } = useSWR(`/directorios/${id}`, fetcher)
+  const { data: dataPrograma } = useSWR(`/programas/${id}`, fetcher)
   const { data: dataOrganizadores } = useSWR("/organizaciones", fetcher)
 
   const isLoading = !dataOrganizadores || !dataPrograma
@@ -24,7 +24,7 @@ export default function DashboardEditarPrograma() {
   return (
     <DasboardLayout>
       <h1 className='text-xl font-bold mb-7'>
-        Registrar entrada en Directorio
+        Editar programa social
       </h1>
 
       <EditarDirectorioForm

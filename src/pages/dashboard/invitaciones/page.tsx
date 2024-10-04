@@ -6,9 +6,9 @@ import useSWR from "swr"
 import EventosTable from "./invitaciones-table"
 
 export default function DashboardInvitaciones() {
-  const { data, isLoading } = useSWR<Evento[]>("/invitaciones", fetcher)
+  const { data } = useSWR<Evento[]>("/eventos/proximos", fetcher)
 
-  if (isLoading || !data) {
+  if (!data) {
     return (
       <DasboardLayout>
         <Loader />
@@ -19,7 +19,7 @@ export default function DashboardInvitaciones() {
   return (
     <DasboardLayout>
       <div className='flex md:flex-row flex-col gap-4 md:items-center justify-between mb-10'>
-        <h1 className='text-xl font-bold'>Invitaciones para eventos</h1>
+        <h1 className='text-xl font-bold'>Invitaciones para eventos futuros</h1>
       </div>
 
       <EventosTable data={data} />

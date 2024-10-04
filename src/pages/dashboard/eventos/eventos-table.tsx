@@ -5,6 +5,7 @@ import { Evento } from "@/types/evento.interface"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, EditIcon, EyeIcon } from "lucide-react"
 import { Link } from "react-router-dom"
+import { Organizacion } from "@/types/organizacion.interface"
 
 const columns: ColumnDef<Evento>[] = [
   {
@@ -37,6 +38,33 @@ const columns: ColumnDef<Evento>[] = [
       </Button>
     ),
     cell: ({ row }) => <div>{row.getValue("fechaInicio")}</div>,
+  },
+  {
+    accessorKey: "organizador",
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Organizador
+        <ArrowUpDown className='ml-2 size-4' />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const organizacion: Organizacion = row.getValue("organizador")
+      return (
+        <div className="flex items-center gap-3">
+          <span>{organizacion.organizador}</span>
+          {organizacion.logo && (
+            <img
+              src={organizacion.logo}
+              alt='logo'
+              className='size-6 rounded object-cover'
+            />
+          )}
+        </div>
+      )
+    },
   },
   {
     id: "actions",

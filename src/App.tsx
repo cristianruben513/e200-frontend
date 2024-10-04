@@ -48,6 +48,7 @@ import DashboardEditarTipoEvento from "./pages/dashboard/tipo-eventos/edit/page"
 import DashboardNuevoTipoEvento from "./pages/dashboard/tipo-eventos/nuevo/page"
 import DashboardTipoEventos from "./pages/dashboard/tipo-eventos/page"
 import DashboardEditarUsuario from "./pages/dashboard/usuarios/editar/page"
+import DashboardContactosRegistroMasivo from "./pages/dashboard/contactos/excel/page"
 
 function App() {
   const all = [Perfil.Administrador, Perfil.Staff, Perfil.Supervisor]
@@ -83,7 +84,7 @@ function App() {
           }
         />
 
-        <Route path='/invitacion/:id' element={<InvitacionDetail />} />
+        <Route path='/invitacion/:token' element={<InvitacionDetail />} />
 
         <Route
           path='/dashboard/eventos'
@@ -170,6 +171,15 @@ function App() {
             <ProtectedRoute
               allowedRoles={[Perfil.Administrador]}
               element={<DashboardEditarContacto />}
+            />
+          }
+        />
+         <Route
+          path='/dashboard/contactos/registro-masivo'
+          element={
+            <ProtectedRoute
+              allowedRoles={[Perfil.Administrador]}
+              element={<DashboardContactosRegistroMasivo />}
             />
           }
         />
