@@ -6,10 +6,10 @@ import { Contacto } from "@/types/contacto.interface"
 import { Evento } from "@/types/evento.interface"
 import { CalendarIcon, ClockIcon, LoaderIcon, MapPinIcon } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import useSWR from "swr"
 import { EventMap } from "./eventMap"
-import { useEffect } from "react"
 
 interface Invitacion {
   token: string
@@ -78,6 +78,17 @@ export default function InvitacionDetail() {
               muestra este código QR
             </span>
           </div>
+
+          {data.evento.urlImagenPromocional && (
+            <div className='col-span-2 md:col-span-4 bg-neutral-200 p-4 items-center justify-center'>
+              <img
+                src={data.evento.urlImagenPromocional}
+                alt={data.evento.urlImagenPromocional}
+                className='w-[200px] h-full rounded-md mx-auto'
+              />
+            </div>
+          )}
+
           <div className='p-4 rounded-xl bg-neutral-200 w-full flex items-center justify-center col-span-2'>
             <QRCodeSVG value={token} size={200} />
           </div>
