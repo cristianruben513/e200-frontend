@@ -106,6 +106,9 @@ export default function NewEventForm({
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema),
     mode: "onChange",
+    defaultValues: {
+      statusEvento: "P",
+    },
   })
 
   // filtrar secciones por municipio
@@ -136,6 +139,7 @@ export default function NewEventForm({
         calificacion: Number(data.calificacion),
         observaciones: data.observaciones,
         urlRedesSociales: data.urlRedesSociales,
+        urlImagenPromocional: data.urlImagenPromocional,
         idTipoLugar: Number(data.tpLugar),
         idTipoEvento: Number(data.tpEvento),
         idOrganizador: Number(data.organizador),
@@ -450,21 +454,23 @@ export default function NewEventForm({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name='asistentesReales'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Asistentes Reales <OptionalBadge />
-                </FormLabel>
-                <FormControl>
-                  <Input type='number' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {form.watch("statusEvento") !== "P" && (
+            <FormField
+              control={form.control}
+              name='asistentesReales'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Asistentes Reales <OptionalBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Input type='number' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
 
         <div className='grid md:grid-cols-2 gap-5 mt-3'>
@@ -543,118 +549,124 @@ export default function NewEventForm({
             />
           </div>
 
-          <div className='grid gap-5 border rounded-xl border-blue-300 p-5'>
-            <p className='font-semibold text-blue-500'>Termino del evento</p>
-            <FormField
-              control={form.control}
-              name='fechaFin'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <CalendarOffIcon className='size-4' />
-                    Fecha
-                    <OptionalBadge />
-                  </FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Elige una fecha</span>
-                          )}
-                          <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className='w-auto p-0' align='start'>
-                      <Calendar
-                        mode='single'
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < form.getValues("fechaInicio")
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='horaFin'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <Clock9Icon className='size-4' />
-                    Hora
-                    <OptionalBadge />
-                  </FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {timeOptions.map((item) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          {form.watch("statusEvento") !== "P" && (
+            <div className='grid gap-5 border rounded-xl border-blue-300 p-5'>
+              <p className='font-semibold text-blue-500'>Termino del evento</p>
+              <FormField
+                control={form.control}
+                name='fechaFin'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <CalendarOffIcon className='size-4' />
+                      Fecha
+                      <OptionalBadge />
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Elige una fecha</span>
+                            )}
+                            <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className='w-auto p-0' align='start'>
+                        <Calendar
+                          mode='single'
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date < form.getValues("fechaInicio")
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='horaFin'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <Clock9Icon className='size-4' />
+                      Hora
+                      <OptionalBadge />
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {timeOptions.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
         </div>
 
-        <FormField
-          control={form.control}
-          name='calificacion'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Calificacion <OptionalBadge />
-              </FormLabel>
-              <FormControl>
-                <Input min={0} max={5} type='number' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {form.watch("statusEvento") !== "P" && (
+          <FormField
+            control={form.control}
+            name='calificacion'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Calificacion <OptionalBadge />
+                </FormLabel>
+                <FormControl>
+                  <Input min={0} max={5} type='number' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
-        <FormField
-          control={form.control}
-          name='observaciones'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Observaciones <OptionalBadge />
-              </FormLabel>
-              <FormControl>
-                <Textarea {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {form.watch("statusEvento") !== "P" && (
+          <FormField
+            control={form.control}
+            name='observaciones'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Observaciones <OptionalBadge />
+                </FormLabel>
+                <FormControl>
+                  <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <div className='grid gap-5 mt-3 my-3'>
           <div className='grid gap-5 border rounded-xl border-blue-300 p-5'>
@@ -743,6 +755,34 @@ export default function NewEventForm({
             </div>
           </div>
         </div>
+
+        <FormField
+          control={form.control}
+          name='urlRedesSociales'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Url Redes Sociales</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='urlImagenPromocional'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Imagen promocional</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button
           className='my-3'

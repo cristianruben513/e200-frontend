@@ -11,9 +11,9 @@ import useSWR from "swr"
 import EventosTable from "./eventos-table"
 
 export default function DashboardEventos() {
-  const { data, isLoading } = useSWR<Evento[]>("/eventos", fetcher)
+  const { data, isValidating } = useSWR<Evento[]>("/eventos", fetcher)
 
-  if (isLoading || !data) {
+  if (isValidating|| !data) {
     return (
       <DasboardLayout>
         <Loader />
@@ -34,7 +34,7 @@ export default function DashboardEventos() {
         </Link>
       </div>
 
-      <Tabs defaultValue='agenda' className='w-full'>
+      <Tabs defaultValue='lista' className='w-full'>
         <TabsList>
           <TabsTrigger value='agenda'>Vista de Agenda</TabsTrigger>
           <TabsTrigger value='lista'>Vista de Lista</TabsTrigger>

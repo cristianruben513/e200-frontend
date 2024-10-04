@@ -24,6 +24,7 @@ export interface Evento {
   calificacion: number | null;
   observaciones: string | null;
   urlRedesSociales: string | null;
+  urlImagenPromocional: string | null;
   creador: Creador;
   tipoLugar: TipoLugar;
   tipoEvento: TipoEvento;

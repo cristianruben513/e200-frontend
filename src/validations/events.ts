@@ -73,4 +73,5 @@ export const eventSchema = z.object({
   calificacion: z.string().optional(),
   observaciones: z.string().optional(),
   urlRedesSociales: z.string().optional(),
+  urlImagenPromocional: z.string().optional(),
 })

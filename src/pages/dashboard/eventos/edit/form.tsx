@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -36,7 +35,7 @@ import {
   LoaderIcon,
   MapPinIcon,
 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
@@ -89,13 +88,9 @@ export default function EditarEventForm({
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema),
     mode: "onChange",
-  })
-
-  // Cargar datos del tipo de lugar al montar el componente
-  useEffect(() => {
-    form.reset({
+    defaultValues: {
       evento: dataEvento.evento,
-      descripcion: dataEvento.descripcion,
+      descripcion: dataEvento.descripcion || "",
       lugar: dataEvento.lugar,
       statusEvento: dataEvento.statusEvento,
       fechaInicio: new Date(dataEvento.fechaInicio),
@@ -110,7 +105,7 @@ export default function EditarEventForm({
       calificacion: dataEvento.calificacion?.toString(),
       observaciones: dataEvento.observaciones || undefined,
       urlRedesSociales: dataEvento.urlRedesSociales || undefined,
-      tpLugar: dataEvento.tipoLugar.id.toString(),
+      urlImagenPromocional: dataEvento.urlImagenPromocional || undefined,
       tpEvento: dataEvento.tipoEvento.id.toString(),
       organizador: dataEvento.organizador.id.toString(),
       ejeTematico: dataEvento.ejeTematico.id.toString(),
@@ -118,8 +113,9 @@ export default function EditarEventForm({
       municipio: dataEvento.municipio.id.toString(),
       seccion: dataEvento.seccion.id.toString(),
       promotor: dataEvento.promotor.id.toString(),
-    })
-  }, [])
+      tpLugar: dataEvento.tipoLugar.id.toString(),
+    },
+  })
 
   const handleClick = () => {
     if (navigator.geolocation) {
@@ -167,6 +163,7 @@ export default function EditarEventForm({
         calificacion: Number(data.calificacion),
         observaciones: data.observaciones,
         urlRedesSociales: data.urlRedesSociales,
+        urlImagenPromocional: data.urlImagenPromocional,
         idTipoLugar: Number(data.tpLugar),
         idTipoEvento: Number(data.tpEvento),
         idOrganizador: Number(data.organizador),
@@ -772,12 +769,40 @@ export default function EditarEventForm({
           </div>
         </div>
 
+        <FormField
+          control={form.control}
+          name='urlRedesSociales'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Url Redes Sociales</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='urlImagenPromocional'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Imagen promocional</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button
           className='my-3'
-          disabled={isLoading || !form.formState.isValid}
+          disabled={isLoading}
         >
           {isLoading && <LoaderIcon className='mr-2 h-4 w-4 animate-spin' />}
-          Registar Evento
+          Actualizar evento
         </Button>
       </form>
     </Form>

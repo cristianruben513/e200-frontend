@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { Evento } from "@/types/evento.interface"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
-import ShowQR from "./components/showQR"
 import EnviarInvitacionesAGrupos from "./components/sendInvitation"
 
 const columns: ColumnDef<Evento>[] = [
@@ -35,13 +34,10 @@ const columns: ColumnDef<Evento>[] = [
     header: () => <div className='text-center'>Acciones</div>,
     cell: ({ row }) => {
       const eventId = row.getValue("id")
-      const qrValue = "https://e200-frontend.pages.dev/invitacion/" + eventId
-      //const qrValue = "http://localhost:5173/invitacion/" + eventId
 
       return (
         <div className='flex justify-center gap-2'>
-          <EnviarInvitacionesAGrupos eventId={eventId as string}/>
-          <ShowQR qrValue={qrValue} />
+          <EnviarInvitacionesAGrupos eventId={eventId as string} />
         </div>
       )
     },

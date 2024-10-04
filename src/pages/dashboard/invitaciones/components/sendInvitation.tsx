@@ -62,7 +62,8 @@ export default function EnviarInvitacionesAGrupos({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size='icon'>
+        <Button className="flex gap-2 items-center">
+          Enviar invitacion
           <Share2Icon className='size-4' />
         </Button>
       </AlertDialogTrigger>
