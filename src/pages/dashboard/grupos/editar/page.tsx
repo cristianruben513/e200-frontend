@@ -7,7 +7,6 @@ import EditarGrupoForm from "./form"
 
 export default function DashboardEditarGrupo() {
   const { id } = useParams()
-
   const { data } = useSWR(`/grupos/${id}`, fetcher)
 
   if (!data) {

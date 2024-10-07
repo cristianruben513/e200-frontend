@@ -16,7 +16,7 @@ export default function DashboardEditarEvento() {
   const { data: dataMunicipios } = useSWR("/municipios", fetcher)
   const { data: dataSecciones } = useSWR("/secciones", fetcher)
   const { data: dataPromotores } = useSWR("/directorios", fetcher)
-
+  
   const { data: dataEvento } = useSWR(`/eventos/${id}`, fetcher)
 
   const isLoading =

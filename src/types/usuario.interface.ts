@@ -1,11 +1,11 @@
-import { Perfil } from "./perfil.interface"
+import type { Perfil } from './perfil.interface'
 
 export interface Usuario {
-  id: number
-  username: string
-  email: string
-  telefono: string
-  createdAt: string
-  deletedAt: string | null
-  perfil: Perfil
+	id: number
+	username: string
+	email: string
+	telefono: string
+	createdAt: string
+	deletedAt: string | null
+	perfil: Perfil
 }

@@ -7,7 +7,7 @@ export interface UploadImageType {
 
 export async function firebaseImageUpload(image: File, path: string): Promise<UploadImageType> {
   try {
-    const fileName = new Date().getTime() + "-" + image.name;
+    const fileName = `${new Date().getTime()}-${image.name}`;
     const storage = getStorage(firebaseApp);
     const storageRef = ref(storage, `${path}/${fileName}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
@@ -17,7 +17,7 @@ export async function firebaseImageUpload(image: File, path: string): Promise<Up
         "state_changed",
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
+          console.log(`Upload is ${progress}% done `);
         },
         (error) => {
           console.log("error uploading image ", error);

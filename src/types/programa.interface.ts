@@ -1,7 +1,7 @@
-import { Organizacion } from "./organizacion.interface";
+import type { Organizacion } from './organizacion.interface'
 
 export interface Programa {
-  id: number;
-  programa: string;
-  organizacion: Organizacion;
+	id: number
+	programa: string
+	organizacion: Organizacion
 }
