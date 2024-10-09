@@ -152,4 +152,11 @@ export const links: Link[] = [
 		label: 'Asistencia',
 		perfil: 'Administrador',
 	},
+	{
+		href: '/dashboard/asistencia',
+		categoria: categorias.JORNADAS_SOCIALES,
+		icon: IoQrCodeOutline,
+		label: 'Eventos',
+		perfil: 'Administrador',
+	},
 ]

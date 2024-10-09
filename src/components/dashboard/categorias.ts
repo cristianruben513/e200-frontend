@@ -4,6 +4,7 @@ import {
   MailCheck,
   NotepadText,
   UserCog,
+  Users,
 } from "lucide-react"
 
 // Define el tipo para las categorías
@@ -33,5 +34,9 @@ export const categorias: Categorias = {
   INVITACIONES: {
     label: "Invitaciones",
     icon: MailCheck,
+  },
+  JORNADAS_SOCIALES: {
+    label: "Jornadas sociales",
+    icon: Users,
   },
 }
