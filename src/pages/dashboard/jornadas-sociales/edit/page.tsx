@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom"
 import useSWR from "swr"  
 import { fetcher } from "@/lib/fetcher"
 
-export default function DashboardEditarTipoEvento() {
+export default function DashboardEditarJornadaSocial() {
   const { id } = useParams()
   const { data, isValidating } = useSWR(`/tipo-eventos/${id}`, fetcher)
 

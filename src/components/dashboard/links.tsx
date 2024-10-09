@@ -153,7 +153,7 @@ export const links: Link[] = [
 		perfil: 'Administrador',
 	},
 	{
-		href: '/dashboard/asistencia',
+		href: '/dashboard/jornadas-sociales',
 		categoria: categorias.JORNADAS_SOCIALES,
 		icon: IoQrCodeOutline,
 		label: 'Eventos',

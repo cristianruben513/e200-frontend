@@ -17,7 +17,7 @@
 		"indentStyle": "tab",
 		"indentWidth": 2,
 		"bracketSpacing": true,
-		"lineWidth": 110,
+		"lineWidth": 90,
 		"formatWithErrors": true
 	},
 	"organizeImports": {
